@@ -23,13 +23,12 @@ public class BotServiceLoader {
 
     private String[] packages;
 
-    private static final ConcurrentMap<String, Object> iocBeanMap = new ConcurrentHashMap<>();
-
     public BotServiceLoader(String[] packages) {
         this.packages = packages;
     }
 
     public void load() {
+        ConcurrentMap<String, Object> iocBeanMap = new ConcurrentHashMap<>();
         List<Method> botMessageMethods = new ArrayList<>();
         List<Method> botRequestMethods = new ArrayList<>();
         List<Method> botEventMethods = new ArrayList<>();
@@ -37,12 +36,13 @@ public class BotServiceLoader {
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {
             log.info("load class " + clazz.getName());
-            iocBeanMap.putIfAbsent(clazz.getName(), Enhancer.enhance(clazz));
+            iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
             MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
             MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
             MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
             log.info("class " + clazz.getName() + " load success");
         }
-        BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods);
+        BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods, iocBeanMap);
+        log.info("bot service load success");
     }
 }

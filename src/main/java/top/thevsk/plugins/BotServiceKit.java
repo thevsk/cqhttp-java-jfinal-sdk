@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class BotServiceKit {
     private static List<Method> botMessageMethods;
@@ -21,11 +22,13 @@ public class BotServiceKit {
     private static Map<String, List<Method>> botMessageMethodsMap = new HashMap<>();
     private static Map<String, List<Method>> botRequestMethodsMap = new HashMap<>();
     private static Map<String, List<Method>> botEventMethodsMap = new HashMap<>();
+    private static ConcurrentMap<String, Object> iocBeanMap;
 
-    public static void init(List<Method> botMessageMethods, List<Method> botRequestMethods, List<Method> botEventMethods) {
+    public static void init(List<Method> botMessageMethods, List<Method> botRequestMethods, List<Method> botEventMethods, ConcurrentMap<String, Object> iocBeanMap) {
         BotServiceKit.botMessageMethods = botMessageMethods;
         BotServiceKit.botRequestMethods = botRequestMethods;
         BotServiceKit.botEventMethods = botEventMethods;
+        BotServiceKit.iocBeanMap = iocBeanMap;
     }
 
     public static List<Method> getBotMessageMethods(MessageType messageType) {
@@ -70,5 +73,9 @@ public class BotServiceKit {
             botEventMethodsMap.put("EventType:" + eventType.getCode() + "|SubType:" + subType.getCode(), result);
         }
         return result;
+    }
+
+    public static Object getClassInstanceByMethod(Method method) {
+        return iocBeanMap.get(method.getDeclaringClass().getName());
     }
 }
