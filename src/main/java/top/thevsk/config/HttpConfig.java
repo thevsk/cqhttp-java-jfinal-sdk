@@ -31,9 +31,7 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void afterJFinalStart() {
-        System.out.println("sever starting...");
         BotServiceLoader botServiceLoader = new BotServiceLoader(PropKit.get("bot.service.packages").split(","));
-        botServiceLoader.start();
-        System.out.println("sever started.");
+        botServiceLoader.load();
     }
 }

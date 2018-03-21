@@ -18,77 +18,59 @@ public class FileSearcher {
     }
 
     public void lookupClasspath(String... packageNames) {
-        if (packageNames != null && packageNames.length != 0) {
-            String[] var7 = packageNames;
-            int var3 = packageNames.length;
-
-            for (int var4 = 0; var4 < var3; ++var4) {
-                String pkg = var7[var4];
-                Collection<URL> urls = ClassUtils.getClasspathURLs(pkg);
-                this.doGetClasspathResources(urls, pkg.replace('.', '/'));
-            }
+        if (packageNames == null || packageNames.length == 0) {
+            Collection<URL> urls = ClassUtils.getClasspathURLs(null);
+            doGetClasspathResources(urls, null);
         } else {
-            Collection<URL> urls = ClassUtils.getClasspathURLs((String) null);
-            this.doGetClasspathResources(urls, (String) null);
+            for (String pkg : packageNames) {
+                Collection<URL> urls = ClassUtils.getClasspathURLs(pkg);
+                doGetClasspathResources(urls, pkg.replace('.', '/'));
+            }
         }
-
     }
 
     private void doGetClasspathResources(Collection<URL> urls, String pkgdir) {
-        Iterator var3 = urls.iterator();
-
-        while (true) {
-            while (true) {
-                while (var3.hasNext()) {
-                    URL url = (URL) var3.next();
-                    String protocol = url.getProtocol();
-                    System.out.println(protocol + " \t " + url);
-                    if ("file".equals(protocol)) {
-                        File file = URLUtils.toFileObject(url);
-                        if (file.isDirectory()) {
-                            this.doLookupInFileSystem(file, pkgdir, (String) null);
-                        } else {
-                            String name = file.getName().toLowerCase();
-                            if (name.endsWith(".jar") || name.endsWith(".zip")) {
-                                this.doLookupInZipFile(url, pkgdir);
-                            }
-                        }
-                    } else if (!"jar".equals(protocol) && !"zip".equals(protocol)) {
-                        if (!"vfs".equals(protocol)) {
-                            throw new IllegalStateException("Unsupported url format: " + url.toString());
-                        }
-
-                        this.doLookupInVfsFile(url, pkgdir);
-                    } else {
-                        this.doLookupInZipFile(url, pkgdir);
+        for (URL url : urls) {
+            String protocol = url.getProtocol();
+            System.out.println(protocol + " \t " + url);
+            if ("file".equals(protocol)) {
+                File file = URLUtils.toFileObject(url);
+                if (file.isDirectory()) {
+                    doLookupInFileSystem(file, pkgdir, null);
+                } else {
+                    String name = file.getName().toLowerCase();
+                    if (name.endsWith(".jar") || name.endsWith(".zip")) {
+                        doLookupInZipFile(url, pkgdir);
                     }
                 }
-
-                return;
+            } else if ("jar".equals(protocol) || "zip".equals(protocol)) {
+                doLookupInZipFile(url, pkgdir);
+            } else if ("vfs".equals(protocol)) {
+                doLookupInVfsFile(url, pkgdir);
+            } else {
+                throw new IllegalStateException("Unsupported url format: "
+                        + url.toString());
             }
         }
     }
 
     private void doLookupInFileSystem(File dir, String pkgdir, String relativeName) {
-        if (dir.exists() && dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            if (files != null) {
-                File[] var5 = files;
-                int var6 = files.length;
-
-                for (int var7 = 0; var7 < var6; ++var7) {
-                    File file = var5[var7];
-                    String name = relativeName == null ? file.getName() : relativeName + '/' + file.getName();
-                    FileSearcher.SystemFileEntry entry = new FileSearcher.SystemFileEntry(file, pkgdir, name);
-                    if (file.isDirectory()) {
-                        if (this.visitSystemDirEntry(entry)) {
-                            this.doLookupInFileSystem(file, pkgdir, name);
-                        }
-                    } else {
-                        this.visitSystemFileEntry(entry);
-                    }
+        if (!dir.exists() || !dir.isDirectory()) {
+            return;
+        }
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            String name = (relativeName == null) ? file.getName() : relativeName + '/' + file.getName();
+            SystemFileEntry entry = new SystemFileEntry(file, pkgdir, name);
+            if (file.isDirectory()) {
+                if (visitSystemDirEntry(entry)) {
+                    doLookupInFileSystem(file, pkgdir, name);
                 }
-
+            } else {
+                visitSystemFileEntry(entry);
             }
         }
     }
