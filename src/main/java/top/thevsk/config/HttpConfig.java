@@ -1,14 +1,13 @@
 package top.thevsk.config;
 
 import com.jfinal.config.*;
-import com.jfinal.kit.PropKit;
 import com.jfinal.template.Engine;
+import top.thevsk.interceptor.SecretInterceptor;
 import top.thevsk.plugins.loader.BotServiceLoader;
 
 public class HttpConfig extends JFinalConfig {
     public void configConstant(Constants constants) {
-        PropKit.use("config.properties");
-        constants.setDevMode(PropKit.getBoolean("dev.mode", false));
+        constants.setDevMode(top.thevsk.entity.Constants.getCfgBoolean("dev.mode", false));
     }
 
     public void configRoute(Routes routes) {
@@ -24,14 +23,16 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void configInterceptor(Interceptors interceptors) {
-
+        if (top.thevsk.entity.Constants.getCfg("http.api.secret") != null) {
+            interceptors.add(new SecretInterceptor());
+        }
     }
 
     public void configHandler(Handlers handlers) {
     }
 
     public void afterJFinalStart() {
-        BotServiceLoader botServiceLoader = new BotServiceLoader(PropKit.get("bot.service.packages").split(","));
+        BotServiceLoader botServiceLoader = new BotServiceLoader(top.thevsk.entity.Constants.getCfg("bot.service.packages").split(","));
         botServiceLoader.load();
     }
 }

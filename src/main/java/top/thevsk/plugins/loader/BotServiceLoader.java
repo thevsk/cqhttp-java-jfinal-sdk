@@ -11,8 +11,7 @@ import top.thevsk.plugins.searcher.ClassSearcher;
 import top.thevsk.plugins.searcher.MethodSearcher;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -29,9 +28,9 @@ public class BotServiceLoader {
 
     public void load() {
         ConcurrentMap<String, Object> iocBeanMap = new ConcurrentHashMap<>();
-        List<Method> botMessageMethods = new ArrayList<>();
-        List<Method> botRequestMethods = new ArrayList<>();
-        List<Method> botEventMethods = new ArrayList<>();
+        Set<Method> botMessageMethods = new HashSet<>();
+        Set<Method> botRequestMethods = new HashSet<>();
+        Set<Method> botEventMethods = new HashSet<>();
         log.info("Load bot service");
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {

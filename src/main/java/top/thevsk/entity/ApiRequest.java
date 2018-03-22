@@ -5,6 +5,10 @@ import java.util.Map;
 
 public class ApiRequest {
 
+    public ApiRequest(Map<String, Object> map) {
+        this.map = map;
+    }
+
     private Map<String, Object> map = new HashMap<>();
 
     private String getStr(String key) {
