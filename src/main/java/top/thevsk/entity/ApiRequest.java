@@ -30,7 +30,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getPostType() {
+    public String getPostType() {
         return getStr("post_type");
     }
 
@@ -39,7 +39,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getSubType() {
+    public String getSubType() {
         return getStr("sub_type");
     }
 
@@ -48,7 +48,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getUserId() {
+    public Long getUserId() {
         return getLong("user_id");
     }
 
@@ -57,7 +57,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getGroupId() {
+    public Long getGroupId() {
         return getLong("group_id");
     }
 
@@ -66,7 +66,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getFlag() {
+    public String getFlag() {
         return getStr("flag");
     }
 
@@ -75,7 +75,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getMessageType() {
+    public String getMessageType() {
         return getStr("message_type");
     }
 
@@ -84,7 +84,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getMessage() {
+    public String getMessage() {
         return getStr("message");
     }
 
@@ -93,7 +93,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getFront() {
+    public Long getFront() {
         return getLong("font");
     }
 
@@ -102,7 +102,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getMessageId() {
+    public Long getMessageId() {
         return getLong("message_id");
     }
 
@@ -111,7 +111,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getDiscussId() {
+    public Long getDiscussId() {
         return getLong("discuss_id");
     }
 
@@ -120,7 +120,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getAnonymous() {
+    public String getAnonymous() {
         return getStr("anonymous");
     }
 
@@ -129,7 +129,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getAnonymousFlag() {
+    public String getAnonymousFlag() {
         return getStr("anonymous_flag");
     }
 
@@ -138,7 +138,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected String getEvent() {
+    public String getEvent() {
         return getStr("event");
     }
 
@@ -147,7 +147,7 @@ public class ApiRequest {
      *
      * @return
      */
-    protected Long getOperatorId() {
+    public Long getOperatorId() {
         return getLong("operator_id");
     }
 }
