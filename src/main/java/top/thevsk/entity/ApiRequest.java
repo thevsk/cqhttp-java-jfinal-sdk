@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class ApiRequest {
 
+    private Map<String, Object> map = new HashMap<>();
+
     public ApiRequest(Map<String, Object> map) {
         this.map = map;
     }
-
-    private Map<String, Object> map = new HashMap<>();
 
     private String getStr(String key) {
         if (map.get(key) != null) {
@@ -159,6 +159,7 @@ public class ApiRequest {
 
     /**
      * 请求类型
+     *
      * @return
      */
     public RequestType getRequestType() {

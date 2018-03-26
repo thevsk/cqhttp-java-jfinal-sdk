@@ -1,5 +1,6 @@
 package top.thevsk.config;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.HttpKit;
@@ -31,41 +32,48 @@ public class MainController extends Controller {
             if (body == null) {
                 body = HttpKit.readData(getRequest());
             }
-            JSONObject j = JSONObject.parseObject(body);
+            ApiRequest apiRequest = new ApiRequest(JSONObject.parseObject(body));
             Set<Method> methods = null;
-            switch (j.getString("post_type")) {
+            switch (apiRequest.getPostType()) {
                 case Constants.POST_TYPE_MESSAGE:
                     methods = BotServiceKit.getBotMessageMethods(MessageType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotMessageMethods(MessageType.valueOf(j.getString("message_type").toUpperCase())));
+                    methods.addAll(BotServiceKit.getBotMessageMethods(apiRequest.getMessageType()));
                     break;
                 case Constants.POST_TYPE_EVENT:
                     methods = BotServiceKit.getBotEventMethods(EventType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotEventMethods(EventType.valueOf(j.getString("event_type").toUpperCase())));
+                    methods.addAll(BotServiceKit.getBotEventMethods(apiRequest.getEvent()));
                     break;
                 case Constants.POST_TYPE_REQUEST:
                     methods = BotServiceKit.getBotRequestMethods(RequestType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotRequestMethods(RequestType.valueOf(j.getString("request_type").toUpperCase())));
+                    methods.addAll(BotServiceKit.getBotRequestMethods(apiRequest.getRequestType()));
                     break;
                 default:
-                    log.warn("收到了未知的消息类型");
+                    log.warn("[上报] 收到了未知的消息类型");
             }
             if (methods == null) {
-                log.info("没有找到能匹配信息的方法");
+                log.info("[上报] 没有找到能匹配信息的方法");
                 return;
             }
-            invoke(methods, j);
+            invoke(methods, apiRequest);
         }).start();
     }
 
-    private void invoke(Set<Method> methods, JSONObject jsonObject) {
-        ApiRequest apiRequest = new ApiRequest(jsonObject);
+    private void invoke(Set<Method> methods, ApiRequest apiRequest) {
         ApiResponse apiResponse = new ApiResponse(apiRequest);
         for (Method method : methods) {
             try {
                 method.invoke(BotServiceKit.getClassInstanceByMethod(method), apiRequest, apiResponse);
             } catch (Exception e) {
-                log.error("方法执行失败", e);
+                onError(method, apiRequest, e);
             }
         }
+    }
+
+    private void onError(Method method, ApiRequest apiRequest, Exception exception) {
+        log.error("[上报] 方法执行失败");
+        log.error("[上报] 方法名 " + method.getName());
+        log.error("[上报] 方法所在类 " + method.getDeclaringClass().getName());
+        log.error("[上报] 接收到的上报信息 " + JSON.toJSONString(apiRequest));
+        log.error("[上报] 错误 ", exception);
     }
 }

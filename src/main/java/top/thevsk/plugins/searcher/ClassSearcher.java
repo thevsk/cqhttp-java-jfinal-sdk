@@ -1,6 +1,5 @@
 package top.thevsk.plugins.searcher;
 
-import com.jfinal.log.Log;
 import top.thevsk.utils.ClassUtils;
 
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ClassSearcher {
-    private static final Log log = Log.getLog(ClassSearcher.class);
 
     public ClassSearcher() {
     }
@@ -40,7 +38,7 @@ public class ClassSearcher {
                     Class<?> klass = ClassUtils.loadClass(qualifiedClassName);
                     classes.add(klass);
                 } catch (Throwable var3) {
-                    ClassSearcher.log.warn("Class load error.", var3);
+                    var3.printStackTrace();
                 }
             }
         };

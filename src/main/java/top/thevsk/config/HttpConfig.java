@@ -1,13 +1,19 @@
 package top.thevsk.config;
 
 import com.jfinal.config.*;
+import com.jfinal.kit.PathKit;
+import com.jfinal.kit.PropKit;
+import com.jfinal.log.Log;
 import com.jfinal.template.Engine;
 import top.thevsk.interceptor.SecretInterceptor;
 import top.thevsk.plugins.loader.BotServiceLoader;
 
 public class HttpConfig extends JFinalConfig {
+
+    Log log = Log.getLog(HttpConfig.class);
+
     public void configConstant(Constants constants) {
-        constants.setDevMode(top.thevsk.entity.Constants.getCfgBoolean("dev.mode", false));
+        PathKit.setWebRootPath("/asd");
     }
 
     public void configRoute(Routes routes) {
@@ -15,7 +21,6 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void configEngine(Engine engine) {
-
     }
 
     public void configPlugin(Plugins plugins) {
@@ -23,8 +28,9 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void configInterceptor(Interceptors interceptors) {
-        if (top.thevsk.entity.Constants.getCfg("http.api.secret") != null) {
+        if (PropKit.get("http.api.secret") != null) {
             interceptors.add(new SecretInterceptor());
+            log.info("[拦截器] Secret 加载成功");
         }
     }
 
@@ -32,7 +38,9 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void afterJFinalStart() {
-        BotServiceLoader botServiceLoader = new BotServiceLoader(top.thevsk.entity.Constants.getCfg("bot.service.packages").split(","));
+        BotServiceLoader botServiceLoader = new BotServiceLoader(PropKit.get("bot.service.packages").split(","));
         botServiceLoader.load();
+        log.info("[服务] 启动完成");
+        log.info("[服务] 端口 " + PropKit.getInt("server.port"));
     }
 }

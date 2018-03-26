@@ -31,17 +31,16 @@ public class BotServiceLoader {
         Set<Method> botMessageMethods = new HashSet<>();
         Set<Method> botRequestMethods = new HashSet<>();
         Set<Method> botEventMethods = new HashSet<>();
-        log.info("Load bot service");
+        log.info("[预加载] botService");
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {
-            log.info("load class " + clazz.getName());
             iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
             MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
             MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
             MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
-            log.info("class " + clazz.getName() + " load success");
+            log.info("[预加载] " + clazz.getName());
         }
         BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods, iocBeanMap);
-        log.info("bot service load success");
+        log.info("[预加载] botService 完成");
     }
 }

@@ -3,10 +3,10 @@ package top.thevsk.interceptor;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import top.thevsk.config.MainController;
-import top.thevsk.entity.Constants;
 import top.thevsk.utils.HmacSHA1Utils;
 
 public class SecretInterceptor implements Interceptor {
@@ -16,7 +16,7 @@ public class SecretInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation invocation) {
         try {
-            String secret = Constants.getCfg("http.api.secret");
+            String secret = PropKit.get("http.api.secret");
             String sha1 = invocation.getController().getHeader("X-Signature");
             if (StrKit.isBlank(sha1)) {
                 onError(invocation);
@@ -37,8 +37,7 @@ public class SecretInterceptor implements Interceptor {
     }
 
     private void onError(Invocation invocation) {
-        //TODO: 传入了不合法的参数
-        log.warn("传入了不合法的参数");
+        log.warn("[拦截器] Secret 传入了不合法的参数");
         invocation.getController().redirect("https://www.google.com");
     }
 }

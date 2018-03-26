@@ -5,13 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.thevsk</groupId>
-
     <artifactId>HttpApiJava</artifactId>
-
     <version>1.0.0</version>
-
     <name>HttpApiJava</name>
-
     <packaging>jar</packaging>
 
     <dependencies>
@@ -81,7 +77,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
-
 </project>
