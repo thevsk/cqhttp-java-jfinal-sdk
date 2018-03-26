@@ -1,15 +1,19 @@
 package top.thevsk.api;
 
 import com.alibaba.fastjson.JSON;
+import com.jfinal.aop.Before;
 import com.jfinal.kit.HttpKit;
 import top.thevsk.entity.Constants;
+import top.thevsk.entity.ReturnJson;
+import top.thevsk.interceptor.ReturnJsonInterceptor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApiBase {
 
-    public static Map<String, String> post(String url, Map<String, Object> map) {
+    @Before(ReturnJsonInterceptor.class)
+    public static ReturnJson post(String url, Map<String, Object> map) {
         String path = Constants.getCfg("http.api.url") + url;
         Map<String, String> header = new HashMap<>();
         header.put("accept", "application/json");
@@ -21,6 +25,6 @@ public class ApiBase {
             header.put("Authorization", "Token " + Constants.getCfg("http.api.access_token").trim());
         }
         String result = HttpKit.post(path, JSON.toJSONString(map), header);
-        return (Map<String, String>) JSON.parse(result);
+        return JSON.parseObject(result, ReturnJson.class);
     }
 }

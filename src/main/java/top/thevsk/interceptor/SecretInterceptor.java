@@ -19,17 +19,13 @@ public class SecretInterceptor implements Interceptor {
             String secret = Constants.getCfg("http.api.secret");
             String sha1 = invocation.getController().getHeader("X-Signature");
             if (StrKit.isBlank(sha1)) {
-                //TODO: 传入了不合法的参数
-                log.warn("传入了不合法的参数");
-                invocation.getController().redirect("https://www.google.com");
+                onError(invocation);
                 return;
             }
             String body = HttpKit.readData(invocation.getController().getRequest());
             String hmacSha1 = HmacSHA1Utils.hmacSha1(body.getBytes(), secret.getBytes());
             if (!sha1.contains(hmacSha1.toLowerCase())) {
-                //TODO: 传入了不合法的参数
-                log.warn("传入了不合法的参数");
-                invocation.getController().redirect("https://www.google.com");
+                onError(invocation);
                 return;
             }
             MainController mainController = invocation.getTarget();
@@ -38,5 +34,11 @@ public class SecretInterceptor implements Interceptor {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void onError(Invocation invocation) {
+        //TODO: 传入了不合法的参数
+        log.warn("传入了不合法的参数");
+        invocation.getController().redirect("https://www.google.com");
     }
 }

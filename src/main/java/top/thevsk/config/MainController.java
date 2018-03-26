@@ -6,6 +6,7 @@ import com.jfinal.kit.HttpKit;
 import com.jfinal.log.Log;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
+import top.thevsk.entity.Constants;
 import top.thevsk.enums.EventType;
 import top.thevsk.enums.MessageType;
 import top.thevsk.enums.RequestType;
@@ -33,15 +34,15 @@ public class MainController extends Controller {
             JSONObject j = JSONObject.parseObject(body);
             Set<Method> methods = null;
             switch (j.getString("post_type")) {
-                case "message":
+                case Constants.POST_TYPE_MESSAGE:
                     methods = BotServiceKit.getBotMessageMethods(MessageType.DEFAULT);
                     methods.addAll(BotServiceKit.getBotMessageMethods(MessageType.valueOf(j.getString("message_type").toUpperCase())));
                     break;
-                case "event":
+                case Constants.POST_TYPE_EVENT:
                     methods = BotServiceKit.getBotEventMethods(EventType.DEFAULT);
                     methods.addAll(BotServiceKit.getBotEventMethods(EventType.valueOf(j.getString("event_type").toUpperCase())));
                     break;
-                case "request":
+                case Constants.POST_TYPE_REQUEST:
                     methods = BotServiceKit.getBotRequestMethods(RequestType.DEFAULT);
                     methods.addAll(BotServiceKit.getBotRequestMethods(RequestType.valueOf(j.getString("request_type").toUpperCase())));
                     break;
@@ -58,7 +59,7 @@ public class MainController extends Controller {
 
     private void invoke(Set<Method> methods, JSONObject jsonObject) {
         ApiRequest apiRequest = new ApiRequest(jsonObject);
-        ApiResponse apiResponse = getApiResponse(jsonObject);
+        ApiResponse apiResponse = new ApiResponse(apiRequest);
         for (Method method : methods) {
             try {
                 method.invoke(BotServiceKit.getClassInstanceByMethod(method), apiRequest, apiResponse);
@@ -66,10 +67,5 @@ public class MainController extends Controller {
                 log.error("方法执行失败", e);
             }
         }
-    }
-
-    private ApiResponse getApiResponse(JSONObject jsonObject) {
-
-        return null;
     }
 }

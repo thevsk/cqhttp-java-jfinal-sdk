@@ -1,5 +1,9 @@
 package top.thevsk.entity;
 
+import top.thevsk.enums.EventType;
+import top.thevsk.enums.MessageType;
+import top.thevsk.enums.RequestType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,8 +79,9 @@ public class ApiRequest {
      *
      * @return
      */
-    public String getMessageType() {
-        return getStr("message_type");
+    public MessageType getMessageType() {
+        if (getStr("message_type") == null) return null;
+        return MessageType.valueOf(getStr("message_type").toUpperCase());
     }
 
     /**
@@ -138,8 +143,9 @@ public class ApiRequest {
      *
      * @return
      */
-    public String getEvent() {
-        return getStr("event");
+    public EventType getEvent() {
+        if (getStr("event") == null) return null;
+        return EventType.valueOf(getStr("event").toUpperCase());
     }
 
     /**
@@ -149,5 +155,14 @@ public class ApiRequest {
      */
     public Long getOperatorId() {
         return getLong("operator_id");
+    }
+
+    /**
+     * 请求类型
+     * @return
+     */
+    public RequestType getRequestType() {
+        if (getStr("request_type") == null) return null;
+        return RequestType.valueOf(getStr("request_type").toUpperCase());
     }
 }
