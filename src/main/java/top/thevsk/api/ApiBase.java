@@ -2,6 +2,7 @@ package top.thevsk.api;
 
 import com.alibaba.fastjson.JSON;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
 import top.thevsk.entity.ReturnJson;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class ApiBase {
 
     @Before(ReturnJsonInterceptor.class)
-    public static ReturnJson post(String url, Map<String, Object> map) {
+    public ReturnJson post(String url, Map<String, Object> map) {
         String path = PropKit.get("http.api.url") + url;
         Map<String, String> header = new HashMap<>();
         header.put("accept", "application/json");

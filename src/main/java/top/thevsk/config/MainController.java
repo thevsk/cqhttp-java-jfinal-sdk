@@ -33,6 +33,7 @@ public class MainController extends Controller {
                 body = HttpKit.readData(getRequest());
             }
             ApiRequest apiRequest = new ApiRequest(JSONObject.parseObject(body));
+            log.info("[上报] 收到了消息 " + JSON.toJSONString(apiRequest));
             Set<Method> methods = null;
             switch (apiRequest.getPostType()) {
                 case Constants.POST_TYPE_MESSAGE:
@@ -50,7 +51,7 @@ public class MainController extends Controller {
                 default:
                     log.warn("[上报] 收到了未知的消息类型");
             }
-            if (methods == null) {
+            if (methods.size() == 0) {
                 log.info("[上报] 没有找到能匹配信息的方法");
                 return;
             }

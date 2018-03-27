@@ -1,5 +1,6 @@
 package top.thevsk.api;
 
+import com.jfinal.aop.Enhancer;
 import top.thevsk.entity.ReturnJson;
 import top.thevsk.enums.MessageType;
 
@@ -7,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ApiSend {
+
+    private static ApiBase apiBase = Enhancer.enhance(ApiBase.class);
 
     public static ReturnJson sendMsg(MessageType messageType, Long userId, Long groupId, Long discussId, String message, Boolean autoEscape) {
         Map<String, Object> map = new HashMap<>();
@@ -26,7 +29,7 @@ public class ApiSend {
         }
         map.put("message", message);
         map.put("auto_escape", autoEscape);
-        return ApiBase.post("send_msg", map);
+        return apiBase.post("send_msg", map);
     }
 
     public static ReturnJson sendMsg(MessageType messageType, Long userId, Long groupId, Long discussId, String message) {
@@ -61,7 +64,7 @@ public class ApiSend {
         Map<String, Object> map = new HashMap<>();
         map.put("user_id", userId);
         map.put("times", times);
-        return ApiBase.post("send_like", map);
+        return apiBase.post("send_like", map);
     }
 
     public static ReturnJson sendLike(Long userId) {
@@ -71,6 +74,6 @@ public class ApiSend {
     public static ReturnJson deleteMsg(Long messageId) {
         Map<String, Object> map = new HashMap<>();
         map.put("message_id", messageId);
-        return ApiBase.post("delete_msg", map);
+        return apiBase.post("delete_msg", map);
     }
 }
