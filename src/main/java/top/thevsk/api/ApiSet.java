@@ -91,7 +91,7 @@ public class ApiSet {
         Map<String, Object> map = new HashMap<>();
         map.put("flag", flag);
         map.put("approve", approve);
-        if (NullUtils.isNullOrBlank(remark))
+        if (NullUtils.isNotNullOrBlank(remark))
             map.put("remark", remark);
         return apiBase.post("set_friend_add_request", map);
     }
@@ -101,7 +101,7 @@ public class ApiSet {
         map.put("flag", flag);
         map.put("type", type);
         map.put("approve", approve);
-        if (NullUtils.isNullOrBlank(reason))
+        if (NullUtils.isNotNullOrBlank(reason))
             map.put("reason", reason);
         return apiBase.post("set_group_add_request", map);
     }

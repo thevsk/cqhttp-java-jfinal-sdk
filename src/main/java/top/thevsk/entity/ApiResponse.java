@@ -29,48 +29,48 @@ public class ApiResponse {
     }
 
     public ReturnJson kick() {
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
             return ApiSet.setGroupKick(apiRequest.getGroupId(), apiRequest.getUserId(), false);
         }
         return null;
     }
 
     public ReturnJson ban(Long time) {
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
             return ApiSet.setGroupBan(apiRequest.getGroupId(), apiRequest.getUserId(), time);
         }
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getFlag()) && MessageType.GROUP.equals(apiRequest.getMessageType())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getFlag()) && MessageType.GROUP.equals(apiRequest.getMessageType())) {
             return ApiSet.setGroupAnonymousBan(apiRequest.getGroupId(), apiRequest.getFlag(), time);
         }
         return null;
     }
 
     public ReturnJson leave() {
-        if (NullUtils.isNullOrBlank(apiRequest.getDiscussId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getDiscussId())) {
             return ApiSet.setDiscussLeave(apiRequest.getDiscussId());
         }
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId())) {
             return ApiSet.setGroupLeave(apiRequest.getGroupId(), false);
         }
         return null;
     }
 
     public ReturnJson setCard(String card) {
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
             return ApiSet.setGroupCard(apiRequest.getGroupId(), apiRequest.getUserId(), card);
         }
         return null;
     }
 
     public ReturnJson setSpecialTitle(String title) {
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
             return ApiSet.setGroupSpecialTitle(apiRequest.getGroupId(), apiRequest.getUserId(), title);
         }
         return null;
     }
 
     public ReturnJson setAdmin(Boolean enable) {
-        if (NullUtils.isNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
+        if (NullUtils.isNotNullOrBlank(apiRequest.getGroupId(), apiRequest.getUserId())) {
             return ApiSet.setGroupAdmin(apiRequest.getGroupId(), apiRequest.getUserId(), enable);
         }
         return null;

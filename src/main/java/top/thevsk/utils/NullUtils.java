@@ -31,4 +31,8 @@ public class NullUtils {
         }
         return false;
     }
+
+    public static boolean isNotNullOrBlank(Object... objects) {
+        return !isNullOrBlank(objects);
+    }
 }
