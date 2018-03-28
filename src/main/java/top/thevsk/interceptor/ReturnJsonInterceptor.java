@@ -13,6 +13,10 @@ public class ReturnJsonInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation invocation) {
         try {
+            log.error("[调用API] url:" + invocation.getArg(0));
+            if (invocation.getArg(1) != null) {
+                log.error("[调用API] 参数:" + JSON.toJSONString(invocation.getArg(1)));
+            }
             invocation.invoke();
             ReturnJson returnObject = invocation.getReturnValue();
             if (returnObject.getRetcode() != 0) {
