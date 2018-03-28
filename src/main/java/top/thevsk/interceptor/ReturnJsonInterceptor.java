@@ -27,6 +27,8 @@ public class ReturnJsonInterceptor implements Interceptor {
 
     private void onError(Invocation invocation) {
         log.error("[拦截器] ReturnJson 发生错误的url:" + invocation.getArg(0));
-        log.error("[拦截器] ReturnJson 发送错误的参数:" + JSON.toJSONString(invocation.getArg(1)));
+        if (invocation.getArg(1) != null) {
+            log.error("[拦截器] ReturnJson 发送错误的参数:" + JSON.toJSONString(invocation.getArg(1)));
+        }
     }
 }

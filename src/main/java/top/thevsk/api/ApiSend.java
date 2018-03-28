@@ -32,32 +32,16 @@ public class ApiSend {
         return apiBase.post("send_msg", map);
     }
 
-    public static ReturnJson sendMsg(MessageType messageType, Long userId, Long groupId, Long discussId, String message) {
-        return sendMsg(messageType, userId, groupId, discussId, message, false);
-    }
-
     public static ReturnJson sendPrivateMsg(Long userId, String message, Boolean autoEscape) {
         return sendMsg(MessageType.PRIVATE, userId, null, null, message, autoEscape);
-    }
-
-    public static ReturnJson sendPrivateMsg(Long userId, String message) {
-        return sendPrivateMsg(userId, message, false);
     }
 
     public static ReturnJson sendGroupMsg(Long groupId, String message, Boolean autoEscape) {
         return sendMsg(MessageType.GROUP, null, groupId, null, message, autoEscape);
     }
 
-    public static ReturnJson sendGroupMsg(Long groupId, String message) {
-        return sendGroupMsg(groupId, message, false);
-    }
-
     public static ReturnJson sendDiscussMsg(Long discussId, String message, Boolean autoEscape) {
         return sendMsg(MessageType.DISCUSS, null, null, discussId, message, autoEscape);
-    }
-
-    public static ReturnJson sendDiscussMsg(Long discussId, String message) {
-        return sendDiscussMsg(discussId, message, false);
     }
 
     public static ReturnJson sendLike(Long userId, int times) {
