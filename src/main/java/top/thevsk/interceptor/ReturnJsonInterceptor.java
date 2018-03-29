@@ -13,9 +13,9 @@ public class ReturnJsonInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation invocation) {
         try {
-            log.debug("[调用API] url:" + invocation.getArg(0));
+            log.info("[调用API] url:" + invocation.getArg(0));
             if (invocation.getArg(1) != null) {
-                log.debug("[调用API] 参数:" + JSON.toJSONString(invocation.getArg(1)));
+                log.info("[调用API] 参数:" + JSON.toJSONString(invocation.getArg(1)));
             }
             invocation.invoke();
             ReturnJson returnObject = invocation.getReturnValue();

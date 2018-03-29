@@ -37,7 +37,7 @@ public class MainController extends Controller {
                 body = HttpKit.readData(getRequest());
             }
             ApiRequest apiRequest = new ApiRequest(JSONObject.parseObject(body));
-            log.debug("[上报] 收到了消息 " + JSON.toJSONString(apiRequest));
+            log.info("[上报] 收到了消息 " + JSON.toJSONString(apiRequest));
             Set<Method> methods = null;
             switch (apiRequest.getPostType()) {
                 case Constants.POST_TYPE_MESSAGE:
