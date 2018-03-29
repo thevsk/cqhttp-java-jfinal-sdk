@@ -15,6 +15,10 @@ public class ApiRequest {
         this.map = map;
     }
 
+    public void set(String key, Object value) {
+        map.put(key, value);
+    }
+
     private String getStr(String key) {
         if (map.get(key) != null) {
             return map.get(key).toString();
