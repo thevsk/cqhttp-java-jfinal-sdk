@@ -1,5 +1,6 @@
 package top.thevsk.entity;
 
+import top.thevsk.api.ApiGet;
 import top.thevsk.api.ApiSend;
 import top.thevsk.api.ApiSet;
 import top.thevsk.enums.MessageType;
@@ -88,5 +89,16 @@ public class ApiResponse {
         } else {
             return ApiSet.setGroupAddRequest(apiRequest.getFlag(), apiRequest.getSubType(), approve, message);
         }
+    }
+
+    public Long getSelfId() {
+        try {
+            ReturnJson returnJson = ApiGet.getLoginInfo();
+            if (returnJson != null) {
+                return Long.valueOf(returnJson.getData().get("user_id").toString());
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
