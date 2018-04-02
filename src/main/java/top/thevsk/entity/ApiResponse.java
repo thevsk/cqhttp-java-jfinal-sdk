@@ -15,17 +15,22 @@ public class ApiResponse {
     }
 
     public ReturnJson reply(String message) {
-        if (!Constants.POST_TYPE_MESSAGE.equals(apiRequest.getPostType())) return null;
-        switch (apiRequest.getMessageType()) {
-            case DISCUSS:
-                return ApiSend.sendDiscussMsg(apiRequest.getDiscussId(), message, false);
-            case GROUP:
-                return ApiSend.sendGroupMsg(apiRequest.getGroupId(), message, false);
-            case PRIVATE:
-                return ApiSend.sendPrivateMsg(apiRequest.getUserId(), message, false);
-            default:
-                return null;
+        if (apiRequest.getMessageType() != null) {
+            switch (apiRequest.getMessageType()) {
+                case DISCUSS:
+                    return ApiSend.sendDiscussMsg(apiRequest.getDiscussId(), message, false);
+                case GROUP:
+                    return ApiSend.sendGroupMsg(apiRequest.getGroupId(), message, false);
+                case PRIVATE:
+                    return ApiSend.sendPrivateMsg(apiRequest.getUserId(), message, false);
+                default:
+                    return null;
+            }
         }
+        if (apiRequest.getGroupId() != null) {
+            return ApiSend.sendGroupMsg(apiRequest.getGroupId(), message, false);
+        }
+        return null;
     }
 
     public ReturnJson kick() {

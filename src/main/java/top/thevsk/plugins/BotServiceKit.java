@@ -28,51 +28,72 @@ public class BotServiceKit {
         BotServiceKit.botRequestMethods = botRequestMethods;
         BotServiceKit.botEventMethods = botEventMethods;
         BotServiceKit.iocBeanMap = iocBeanMap;
+        eachBotMessage();
+        eachBotRequest();
+        eachBotEvent();
     }
 
-    public static Set<Method> getBotMessageMethods(MessageType messageType) {
-        Set<Method> result = botMessageMethodsMap.get("MessageType:" + messageType.getCode());
-        if (result == null) {
-            result = new HashSet<>();
+    private static void eachBotMessage() {
+        for (MessageType messageType : MessageType.class.getEnumConstants()) {
+            if (MessageType.DEFAULT.equals(messageType)) continue;
+            Set<Method> set = new HashSet<>();
             for (Method method : botMessageMethods) {
                 BotMessage botMessage = method.getAnnotation(BotMessage.class);
                 if (messageType.equals(botMessage.messageType())) {
-                    result.add(method);
+                    set.add(method);
+                }
+                if (MessageType.DEFAULT.equals(botMessage.messageType())) {
+                    set.add(method);
                 }
             }
-            botMessageMethodsMap.put("MessageType:" + messageType.getCode(), result);
+            botMessageMethodsMap.put("MessageType:" + messageType.getCode(), set);
         }
-        return result;
     }
 
-    public static Set<Method> getBotRequestMethods(RequestType requestType) {
-        Set<Method> result = botRequestMethodsMap.get("RequestType:" + requestType.getCode());
-        if (result == null) {
-            result = new HashSet<>();
+    private static void eachBotRequest() {
+        for (RequestType requestType : RequestType.class.getEnumConstants()) {
+            if (EventType.DEFAULT.equals(requestType)) continue;
+            Set<Method> set = new HashSet<>();
             for (Method method : botRequestMethods) {
                 BotRequest botRequest = method.getAnnotation(BotRequest.class);
                 if (requestType.equals(botRequest.requestType())) {
-                    result.add(method);
+                    set.add(method);
+                }
+                if (RequestType.DEFAULT.equals(botRequest.requestType())) {
+                    set.add(method);
                 }
             }
-            botRequestMethodsMap.put("RequestType:" + requestType.getCode(), result);
+            botRequestMethodsMap.put("RequestType:" + requestType.getCode(), set);
         }
-        return result;
     }
 
-    public static Set<Method> getBotEventMethods(EventType eventType) {
-        Set<Method> result = botEventMethodsMap.get("EventType:" + eventType.getCode());
-        if (result == null) {
-            result = new HashSet<>();
+    private static void eachBotEvent() {
+        for (EventType eventType : EventType.class.getEnumConstants()) {
+            if (EventType.DEFAULT.equals(eventType)) continue;
+            Set<Method> set = new HashSet<>();
             for (Method method : botEventMethods) {
                 BotEvent botEvent = method.getAnnotation(BotEvent.class);
                 if (eventType.equals(botEvent.eventType())) {
-                    result.add(method);
+                    set.add(method);
+                }
+                if (EventType.DEFAULT.equals(botEvent.eventType())) {
+                    set.add(method);
                 }
             }
-            botEventMethodsMap.put("EventType:" + eventType.getCode(), result);
+            botEventMethodsMap.put("EventType:" + eventType.getCode(), set);
         }
-        return result;
+    }
+
+    public static Set<Method> getBotMessageMethods(MessageType messageType) {
+        return botMessageMethodsMap.get("MessageType:" + messageType.getCode());
+    }
+
+    public static Set<Method> getBotRequestMethods(RequestType requestType) {
+        return botRequestMethodsMap.get("RequestType:" + requestType.getCode());
+    }
+
+    public static Set<Method> getBotEventMethods(EventType eventType) {
+        return botEventMethodsMap.get("EventType:" + eventType.getCode());
     }
 
     public static Object getClassInstanceByMethod(Method method) {

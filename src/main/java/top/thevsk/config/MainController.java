@@ -9,9 +9,6 @@ import top.thevsk.annotation.BotMessage;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
 import top.thevsk.entity.Constants;
-import top.thevsk.enums.EventType;
-import top.thevsk.enums.MessageType;
-import top.thevsk.enums.RequestType;
 import top.thevsk.interceptor.MessageFilterInterceptor;
 import top.thevsk.interceptor.ServiceInterceptor;
 import top.thevsk.plugins.BotServiceKit;
@@ -41,16 +38,13 @@ public class MainController extends Controller {
             Set<Method> methods = null;
             switch (apiRequest.getPostType()) {
                 case Constants.POST_TYPE_MESSAGE:
-                    methods = BotServiceKit.getBotMessageMethods(MessageType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotMessageMethods(apiRequest.getMessageType()));
+                    methods = BotServiceKit.getBotMessageMethods(apiRequest.getMessageType());
                     break;
                 case Constants.POST_TYPE_EVENT:
-                    methods = BotServiceKit.getBotEventMethods(EventType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotEventMethods(apiRequest.getEvent()));
+                    methods = BotServiceKit.getBotEventMethods(apiRequest.getEvent());
                     break;
                 case Constants.POST_TYPE_REQUEST:
-                    methods = BotServiceKit.getBotRequestMethods(RequestType.DEFAULT);
-                    methods.addAll(BotServiceKit.getBotRequestMethods(apiRequest.getRequestType()));
+                    methods = BotServiceKit.getBotRequestMethods(apiRequest.getRequestType());
                     break;
                 default:
                     log.warn("[上报] 收到了未知的消息类型");
