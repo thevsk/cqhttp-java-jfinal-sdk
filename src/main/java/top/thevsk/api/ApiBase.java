@@ -25,6 +25,7 @@ public class ApiBase {
         if (PropKit.get("http.api.access_token") != null) {
             header.put("Authorization", "Token " + PropKit.get("http.api.access_token").trim());
         }
+        if (map == null) map = new HashMap<>();
         String result = HttpKit.post(path, JSON.toJSONString(map), header);
         return JSON.parseObject(result, ReturnJson.class);
     }
