@@ -34,11 +34,14 @@ public class BotServiceLoader {
         log.info("[预加载] botService");
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {
-            iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
-            MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
-            MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
-            MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
-            log.info("[预加载] " + clazz.getName());
+            BotService botService = clazz.getAnnotation(BotService.class);
+            if (botService.state()) {
+                iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
+                MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
+                MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
+                MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
+                log.info("[预加载] " + clazz.getName());
+            }
         }
         BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods, iocBeanMap);
         log.info("[预加载] botService 完成");

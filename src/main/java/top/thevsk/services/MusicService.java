@@ -14,7 +14,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-@BotService
+@BotService(state = false)
 public class MusicService {
 
     @BotMessage(messageType = MessageType.GROUP, filter = "startWiths:点歌,點歌")
