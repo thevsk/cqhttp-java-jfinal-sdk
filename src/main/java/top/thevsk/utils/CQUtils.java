@@ -96,7 +96,7 @@ public class CQUtils {
      */
     public static String[] getUserIdInCqAtMessage(String message) {
         List<String> list = new ArrayList<>();
-        Pattern pattern = Pattern.compile("CQ:at,qq=(\\d+)");
+        Pattern pattern = Pattern.compile("\\[CQ:at,qq=(\\d+)]");
         Matcher matcher = pattern.matcher(message);
         while (matcher.find()) {
             list.add(matcher.group(1));

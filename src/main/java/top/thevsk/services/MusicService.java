@@ -18,7 +18,7 @@ import java.util.Map;
 @BotService(state = false)
 public class MusicService {
 
-    @BotMessage(messageType = MessageType.GROUP, filter = "startWiths:点歌,點歌")
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:点歌,點歌")
     public void music(ApiRequest request, ApiResponse response) {
         String id = post(request.getMessage());
         if (NullUtils.isNotNullOrBlank(id)) {
