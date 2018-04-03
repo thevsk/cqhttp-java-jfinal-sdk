@@ -19,7 +19,7 @@ public class ReturnJsonInterceptor implements Interceptor {
             }
             invocation.invoke();
             ReturnJson returnObject = invocation.getReturnValue();
-            if (returnObject.getRetcode() != 0) {
+            if (returnObject.getRetcode() != 0 && returnObject.getRetcode() != 1) {
                 log.error("[拦截器] ReturnJson 插件返回错误, code:" + returnObject.getRetcode());
                 onError(invocation);
             }

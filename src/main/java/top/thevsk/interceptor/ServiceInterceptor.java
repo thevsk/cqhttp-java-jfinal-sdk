@@ -16,6 +16,5 @@ public class ServiceInterceptor {
         log.error("[上报] 方法所在类 " + method.getDeclaringClass().getName());
         log.error("[上报] 接收到的上报信息 " + JSON.toJSONString(apiRequest));
         log.error("[上报] 错误 ", exception);
-
     }
 }

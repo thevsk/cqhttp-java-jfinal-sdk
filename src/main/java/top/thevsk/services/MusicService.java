@@ -8,6 +8,7 @@ import top.thevsk.annotation.BotService;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
 import top.thevsk.enums.MessageType;
+import top.thevsk.utils.CQUtils;
 import top.thevsk.utils.NullUtils;
 
 import java.net.URLEncoder;
@@ -21,7 +22,7 @@ public class MusicService {
     public void music(ApiRequest request, ApiResponse response) {
         String id = post(request.getMessage());
         if (NullUtils.isNotNullOrBlank(id)) {
-            response.reply("[CQ:music,type=163,id=" + id + "]");
+            response.reply(CQUtils.music("163", id));
         } else {
             response.reply("songs not find");
         }
