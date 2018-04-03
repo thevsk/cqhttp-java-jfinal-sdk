@@ -1,5 +1,6 @@
 package top.thevsk.services;
 
+import com.jfinal.kit.StrKit;
 import top.thevsk.annotation.BotMessage;
 import top.thevsk.annotation.BotService;
 import top.thevsk.entity.ApiRequest;
@@ -18,5 +19,11 @@ public class TestService {
         } catch (Exception e) {
             response.replyAt(e.getMessage());
         }
+    }
+
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:getQQ")
+    public void getQQ(ApiRequest request, ApiResponse response) {
+        String[] strings = CQUtils.getUserIdInCqAtMessage(request.getMessage());
+        response.reply(StrKit.join(strings, ","));
     }
 }
