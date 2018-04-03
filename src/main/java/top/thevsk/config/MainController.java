@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import top.thevsk.annotation.BotMessage;
 import top.thevsk.entity.ApiRequest;
@@ -12,7 +13,6 @@ import top.thevsk.entity.Constants;
 import top.thevsk.interceptor.MessageFilterInterceptor;
 import top.thevsk.interceptor.ServiceInterceptor;
 import top.thevsk.plugins.BotServiceKit;
-import top.thevsk.utils.NullUtils;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -77,7 +77,7 @@ public class MainController extends Controller {
             BotMessage botMessage = method.getAnnotation(BotMessage.class);
             String filter = botMessage.filter();
             boolean flag = true;
-            if (NullUtils.isNotNullOrBlank(filter, apiRequest.getMessage())) {
+            if (StrKit.notBlank(filter)) {
                 flag = MessageFilterInterceptor.getInstance().filter(filter, apiRequest);
             }
             if (flag) {
