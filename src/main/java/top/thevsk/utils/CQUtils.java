@@ -1,5 +1,11 @@
 package top.thevsk.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CQUtils {
 
     private static String base(String function, String keys[], Object... values) {
@@ -80,5 +86,29 @@ public class CQUtils {
 
     public static String share(String url, String title, String content, String image) {
         return base("share", new String[]{"url", "title", "content", "image"}, url, title, content, image);
+    }
+
+    /**
+     * 从信息中抽取[CQ:at,qq={qq}]里的qq号返回列表
+     *
+     * @param message
+     * @return
+     */
+    public static String[] getUserIdInCqAtMessage(String message) {
+        List<String> list = new ArrayList<>();
+        Pattern pattern = Pattern.compile("CQ:at,qq=(\\d+)");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            list.add(matcher.group(1));
+        }
+        return list.toArray(new String[]{});
+    }
+
+    public static void main(String[] args) {
+        String message = "[CQ:at,qq=2522534411][CQ:at,qq=2522534412][CQ:at,qq=2522534413][CQ:at,qq=2522534414][CQ:at,qq=2522534415] 50 [CQ:at,qq=2522534416]";
+        String[] strings = getUserIdInCqAtMessage(message);
+        for (int i = 0; i < strings.length; i++) {
+            System.out.println(strings[i]);
+        }
     }
 }
