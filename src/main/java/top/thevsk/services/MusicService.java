@@ -15,20 +15,25 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-@BotService(state = false)
+@BotService
 public class MusicService {
 
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:点歌,點歌")
     public void music(ApiRequest request, ApiResponse response) {
-        String id = post(request.getMessage());
-        if (NullUtils.isNotNullOrBlank(id)) {
-            response.reply(CQUtils.music("163", id));
+        String result = postQQ(request.getMessage());
+        if (NullUtils.isNotNullOrBlank(result)) {
+            response.reply(result);
         } else {
-            response.reply("songs not find");
+            response.reply("songs not find 歌曲未找到或不存在");
         }
     }
 
-    private String post(String message) {
+    /**
+     * 163网易点歌，如果 coolQ 在 docker 内会卡顿并阻塞，原因未知
+     * @param message
+     * @return
+     */
+    private String post163(String message) {
         try {
             String url = "http://music.163.com/api/search/get/web";
             String bodyStr = "s=" + URLEncoder.encode(message.trim(), "UTF-8") + "&limit=1&type=1";
@@ -43,7 +48,25 @@ public class MusicService {
             header.put("Connection", "keep-alive");
             String result = HttpKit.post(url, bodyStr, header);
             JSONObject jsonObject = JSON.parseObject(result);
-            return jsonObject.getJSONObject("result").getJSONArray("songs").getJSONObject(0).getString("id");
+            String id = jsonObject.getJSONObject("result").getJSONArray("songs").getJSONObject(0).getString("id");
+            return CQUtils.music("163", id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * qq点歌，可以正常使用
+     * @param message
+     * @return
+     */
+    private String postQQ(String message) {
+        try {
+            String url = "http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=1&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w=";
+            String result = HttpKit.get(url + URLEncoder.encode(message.trim(), "UTF-8"));
+            JSONObject jsonObject = JSON.parseObject(result);
+            String id = jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("list").getJSONObject(0).getString("f").split("\\|")[0];
+            return CQUtils.music("qq", id);
         } catch (Exception e) {
             return null;
         }
