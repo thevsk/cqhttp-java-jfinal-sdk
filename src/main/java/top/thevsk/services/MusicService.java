@@ -30,6 +30,7 @@ public class MusicService {
 
     /**
      * 163网易点歌，如果 coolQ 在 docker 内会卡顿并阻塞，原因未知
+     *
      * @param message
      * @return
      */
@@ -57,6 +58,7 @@ public class MusicService {
 
     /**
      * qq点歌，可以正常使用
+     *
      * @param message
      * @return
      */

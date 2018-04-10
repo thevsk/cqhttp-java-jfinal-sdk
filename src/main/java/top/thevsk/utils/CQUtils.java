@@ -103,12 +103,4 @@ public class CQUtils {
         }
         return list.toArray(new String[]{});
     }
-
-    public static void main(String[] args) {
-        String message = "[CQ:at,qq=2522534411][CQ:at,qq=2522534412][CQ:at,qq=2522534413][CQ:at,qq=2522534414][CQ:at,qq=2522534415] 50 [CQ:at,qq=2522534416]";
-        String[] strings = getUserIdInCqAtMessage(message);
-        for (int i = 0; i < strings.length; i++) {
-            System.out.println(strings[i]);
-        }
-    }
 }
