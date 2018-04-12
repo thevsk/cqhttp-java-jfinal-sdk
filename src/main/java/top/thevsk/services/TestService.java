@@ -26,4 +26,9 @@ public class TestService {
         String[] strings = CQUtils.getUserIdInCqAtMessage(request.getMessage());
         response.reply(StrKit.join(strings, ","));
     }
+
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:say")
+    public void say(ApiRequest request, ApiResponse response) {
+        response.reply(request.getMessage());
+    }
 }
