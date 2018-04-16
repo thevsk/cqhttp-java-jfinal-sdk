@@ -9,7 +9,7 @@ import top.thevsk.enums.MessageType;
 import java.util.HashMap;
 import java.util.Map;
 
-@BotService(state = false)
+@BotService(enable = false)
 public class MessageService {
 
     private static Map<String, String> msgs = new HashMap<>();
