@@ -2,7 +2,6 @@ package top.thevsk.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,6 +96,16 @@ public class CQUtils {
     public static String[] getUserIdInCqAtMessage(String message) {
         List<String> list = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\[CQ:at,qq=(\\d+)]");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            list.add(matcher.group(1));
+        }
+        return list.toArray(new String[]{});
+    }
+
+    public static String[] getUrlInCqImage(String message) {
+        List<String> list = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\[CQ:image,file=.+,url=(.+)]");
         Matcher matcher = pattern.matcher(message);
         while (matcher.find()) {
             list.add(matcher.group(1));
