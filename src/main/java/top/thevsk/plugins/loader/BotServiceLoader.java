@@ -35,7 +35,7 @@ public class BotServiceLoader {
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {
             BotService botService = clazz.getAnnotation(BotService.class);
-            if (botService.state()) {
+            if (botService.enable()) {
                 iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
                 MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
                 MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);

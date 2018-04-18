@@ -52,6 +52,16 @@ public class ApiResponse {
     }
 
     /**
+     * 回复某人 私人消息
+     * @param message
+     * @param userId
+     * @return
+     */
+    public ReturnJson replyPrivate(String message, Long userId) {
+        return ApiSend.sendPrivateMsg(userId, message, false);
+    }
+
+    /**
      * 踢出消息发送人 仅限群
      *
      * @return

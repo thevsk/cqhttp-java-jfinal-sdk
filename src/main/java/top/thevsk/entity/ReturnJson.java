@@ -1,5 +1,7 @@
 package top.thevsk.entity;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.Map;
 
 public class ReturnJson {
@@ -40,5 +42,9 @@ public class ReturnJson {
     }
 
     public ReturnJson() {
+    }
+
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

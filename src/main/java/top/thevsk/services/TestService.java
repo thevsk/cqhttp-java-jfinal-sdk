@@ -5,8 +5,12 @@ import top.thevsk.annotation.BotMessage;
 import top.thevsk.annotation.BotService;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
+import top.thevsk.entity.ReturnJson;
 import top.thevsk.enums.MessageType;
 import top.thevsk.utils.CQUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @BotService
 public class TestService {
@@ -30,5 +34,11 @@ public class TestService {
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:say")
     public void say(ApiRequest request, ApiResponse response) {
         response.reply(request.getMessage());
+    }
+
+    private Map<String, String> parseMap(String message) {
+        Map<String, String> map = new HashMap<>();
+
+        return map;
     }
 }
