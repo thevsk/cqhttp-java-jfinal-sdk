@@ -1,8 +1,8 @@
 package top.thevsk.api;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
 import top.thevsk.entity.ReturnJson;
@@ -27,6 +27,15 @@ public class ApiBase {
         }
         if (map == null) map = new HashMap<>();
         String result = HttpKit.post(path, JSON.toJSONString(map), header);
-        return JSON.parseObject(result, ReturnJson.class);
+        JSONObject jsonObject = JSON.parseObject(result);
+        ReturnJson returnJson = new ReturnJson(jsonObject.getString("status"), jsonObject.getInteger("retcode"));
+        if (jsonObject.get("data") != null) {
+            if (jsonObject.get("data").getClass().getName().contains("JSONArray")) {
+                returnJson.setDataList(jsonObject.getJSONArray("data"));
+            } else {
+                returnJson.setData(jsonObject.getJSONObject("data"));
+            }
+        }
+        return returnJson;
     }
 }

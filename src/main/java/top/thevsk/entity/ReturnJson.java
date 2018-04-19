@@ -1,15 +1,17 @@
 package top.thevsk.entity;
 
 import com.alibaba.fastjson.JSON;
-
-import java.util.Map;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 public class ReturnJson {
     private String status;
 
     private Integer retcode;
 
-    private Map<String, Object> data;
+    private JSONObject data;
+
+    private JSONArray dataList;
 
     public String getStatus() {
         return status;
@@ -27,18 +29,25 @@ public class ReturnJson {
         this.retcode = retcode;
     }
 
-    public Map<String, Object> getData() {
+    public JSONObject getData() {
         return data;
     }
 
-    public void setData(Map<String, Object> data) {
+    public void setData(JSONObject data) {
         this.data = data;
     }
 
-    public ReturnJson(String status, Integer retcode, Map<String, Object> data) {
+    public JSONArray getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(JSONArray dataList) {
+        this.dataList = dataList;
+    }
+
+    public ReturnJson(String status, Integer retcode) {
         this.status = status;
         this.retcode = retcode;
-        this.data = data;
     }
 
     public ReturnJson() {
