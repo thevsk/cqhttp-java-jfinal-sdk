@@ -1,5 +1,8 @@
 package top.thevsk.services;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.StrKit;
 import top.thevsk.annotation.BotMessage;
 import top.thevsk.annotation.BotService;
@@ -34,6 +37,12 @@ public class TestService {
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!say")
     public void say(ApiRequest request, ApiResponse response) {
         response.reply(request.getMessage());
+    }
+
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!acg")
+    public void acg(ApiRequest request, ApiResponse response) {
+        JSONObject jsonObject = JSON.parseObject((HttpKit.get("http://acg.bakayun.cn/randbg.php?Type=json")));
+        response.reply(CQUtils.image(jsonObject.getString("ImgUrl")));
     }
 
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!getUrl")
