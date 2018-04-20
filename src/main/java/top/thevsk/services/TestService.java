@@ -1,16 +1,10 @@
 package top.thevsk.services;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.StrKit;
 import top.thevsk.annotation.BotMessage;
 import top.thevsk.annotation.BotService;
-import top.thevsk.api.ApiGet;
-import top.thevsk.api.ApiSystem;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
-import top.thevsk.entity.ReturnJson;
 import top.thevsk.enums.MessageType;
 import top.thevsk.utils.CQUtils;
 
@@ -51,39 +45,10 @@ public class TestService {
         }
     }
 
-    @BotMessage(messageType = MessageType.GROUP, filter = "eq:!groupList")
-    public void groupList(ApiRequest request, ApiResponse response) {
-        try {
-            ReturnJson returnJson = ApiGet.getGroupList();
-            if (returnJson.getRetcode() == 0) {
-                StringBuffer sbf = new StringBuffer();
-                JSONArray jsonArray = returnJson.getDataList();
-                sbf.append("Num:" + jsonArray.size());
-                sbf.append("\n");
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    if (i != 0) {
-                        sbf.append("\n");
-                    }
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    sbf.append(jsonObject.get("group_id") + ":" + jsonObject.get("group_name"));
-                }
-                response.reply(sbf.toString());
-            } else
-                response.reply("retCode:" + returnJson.getRetcode());
-        } catch (Exception e) {
-            response.replyAt(e.getMessage());
-        }
-    }
-
-    @BotMessage(messageType = MessageType.GROUP, filter = "eq:!clean")
-    public void clean(ApiRequest request, ApiResponse response) {
-        response.reply("clean:" + JSON.toJSONString(ApiSystem.cleanDataDir()));
-    }
-
-//    @BotMessage(messageType = MessageType.GROUP, filter = "groupId:326116567")
+    //    @BotMessage(messageType = MessageType.GROUP, filter = "groupId:326116567")
     @BotMessage(messageType = MessageType.GROUP)
     public void repeat(ApiRequest request, ApiResponse response) {
-        if (new Random().nextInt(50) == 0) {
+        if (new Random().nextInt(1000) == 0) {
             new Thread(() -> {
                 try {
                     Thread.sleep(500);

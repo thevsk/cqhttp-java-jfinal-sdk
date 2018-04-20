@@ -74,7 +74,9 @@ public class ApiSystem {
      *
      * @return
      */
-    public static ReturnJson cleanDataDir() {
-        return apiBase.post("clean_data_dir", null);
+    public static ReturnJson cleanDataDir(String dataDir) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("data_dir", dataDir);
+        return apiBase.post("clean_data_dir", map);
     }
 }

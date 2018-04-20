@@ -3,7 +3,6 @@ package top.thevsk.entity;
 import top.thevsk.api.ApiGet;
 import top.thevsk.api.ApiSend;
 import top.thevsk.api.ApiSet;
-import top.thevsk.enums.MessageType;
 import top.thevsk.enums.RequestType;
 import top.thevsk.utils.CQUtils;
 import top.thevsk.utils.NullUtils;
@@ -59,6 +58,10 @@ public class ApiResponse {
      */
     public ReturnJson replyPrivate(String message, Long userId) {
         return ApiSend.sendPrivateMsg(userId, message, false);
+    }
+
+    public ReturnJson replyGroup(String message, Long groupId) {
+        return ApiSend.sendGroupMsg(groupId, message, false);
     }
 
     /**
