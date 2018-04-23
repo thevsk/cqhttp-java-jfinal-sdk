@@ -58,13 +58,7 @@ public class TestService {
     @BotMessage(messageType = MessageType.GROUP)
     public void repeat(ApiRequest request, ApiResponse response) {
         if (new Random().nextInt(1000) == 0) {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(500);
-                    response.reply(request.getMessage());
-                } catch (InterruptedException e) {
-                }
-            }).start();
+            response.reply(request.getMessage());
         }
     }
 
