@@ -205,7 +205,7 @@ public class ApiResponse {
      */
     public ReturnJson requestAdd(Boolean approve, String message) {
         if (!Constants.POST_TYPE_REQUEST.equals(apiRequest.getPostType())) return null;
-        if (RequestType.FRIEND.equals(apiRequest.getMessageType())) {
+        if (RequestType.FRIEND.equals(apiRequest.getRequestType())) {
             return ApiSet.setFriendAddRequest(apiRequest.getFlag(), approve, message);
         } else {
             return ApiSet.setGroupAddRequest(apiRequest.getFlag(), apiRequest.getSubType(), approve, message);
