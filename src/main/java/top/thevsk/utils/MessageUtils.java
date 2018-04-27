@@ -21,6 +21,6 @@ public class MessageUtils {
     public static String getOrEx(Map<String, String> map, String key) throws Exception {
         if (map == null) throw new Exception("empty map");
         if (map.get(key) == null) throw new Exception("key " + key + " is null");
-        return map.get(key).replace("+", " ");
+        return map.get(key).replace("+", " ").replace("&#44;", ",");
     }
 }

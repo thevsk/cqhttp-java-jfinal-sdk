@@ -174,6 +174,10 @@ public class BlShipService {
         if (debugger) {
             response.reply("展示数据生成完毕");
         }
+        String[] filters = readEx("filter").split(",");
+        for (String filter : filters) {
+            render = render.replace(filter, "");
+        }
         return render;
     }
 
