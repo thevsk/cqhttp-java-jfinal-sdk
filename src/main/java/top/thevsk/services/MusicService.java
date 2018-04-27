@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-@BotService
+@BotService(enable = false)
 public class MusicService {
 
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:点歌,點歌")
@@ -70,8 +70,9 @@ public class MusicService {
             String id = jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("list").getJSONObject(0).getString("f").split("\\|")[0];
             return CQUtils.music("qq", id);
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
 }
