@@ -14,6 +14,18 @@ public class MessageFilterInterceptor {
     }
 
     public boolean filter(String filter, ApiRequest request) {
+        if (filter.contains("|")) {
+            String[] filters = filter.split("\\|");
+            for (int i = 0; i < filters.length; i++) {
+                if (!filterInv(filters[i], request)) return false;
+            }
+            return true;
+        } else {
+            return filterInv(filter, request);
+        }
+    }
+
+    public boolean filterInv(String filter, ApiRequest request) {
         if (filter.startsWith("eq:")) {
             return eqs(filter.replace("eq:", ""), request.getMessage());
         }

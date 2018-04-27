@@ -93,14 +93,14 @@ public class CQUtils {
      * @param message
      * @return
      */
-    public static String[] getUserIdInCqAtMessage(String message) {
-        List<String> list = new ArrayList<>();
+    public static Long[] getUserIdInCqAtMessage(String message) {
+        List<Long> list = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\[CQ:at,qq=(\\d+)]");
         Matcher matcher = pattern.matcher(message);
         while (matcher.find()) {
-            list.add(matcher.group(1));
+            list.add(Long.valueOf(matcher.group(1)));
         }
-        return list.toArray(new String[]{});
+        return list.toArray(new Long[]{});
     }
 
     public static String[] getUrlInCqImage(String message) {

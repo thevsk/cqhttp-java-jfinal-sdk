@@ -170,4 +170,22 @@ public class ApiRequest {
         if (getStr("request_type") == null) return null;
         return RequestType.valueOf(getStr("request_type").toUpperCase());
     }
+
+    /**
+     * 获取机器人的 QQ 号
+     *
+     * @return
+     */
+    public Long getSelfId() {
+        return getLong("self_id");
+    }
+
+    /**
+     * 是否为机器人自己产生的消息
+     *
+     * @return
+     */
+    public boolean isSelf() {
+        return getSelfId().equals(getUserId());
+    }
 }
