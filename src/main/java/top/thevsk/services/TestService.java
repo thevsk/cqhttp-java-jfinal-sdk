@@ -29,6 +29,16 @@ public class TestService {
         }
     }
 
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!custom")
+    public void custom(ApiRequest request, ApiResponse response) {
+        try {
+            Map<String, String> map = parseMap(request.getMessage());
+            response.reply(CQUtils.music(getOrEx(map, "url"), getOrEx(map, "audio"), getOrEx(map, "title"), getOrEx(map, "content"), getOrEx(map, "image")));
+        } catch (Exception e) {
+            response.replyAt(e.getMessage());
+        }
+    }
+
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!say")
     public void say(ApiRequest request, ApiResponse response) {
         response.reply(request.getMessage());
