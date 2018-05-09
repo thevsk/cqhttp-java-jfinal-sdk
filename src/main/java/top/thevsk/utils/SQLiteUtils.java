@@ -15,8 +15,6 @@ public class SQLiteUtils {
 
     private Connection connection;
 
-    private Statement statement;
-
     private String filePath;
 
     public SQLiteUtils(String filePath) throws Exception {
@@ -27,10 +25,9 @@ public class SQLiteUtils {
     private void init() throws Exception {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:" + filePath);
-        statement = connection.createStatement();
     }
 
-    public boolean createTable(String tableName, List<TableColumn> tableColumns) throws Exception {
+    public void createTable(String tableName, List<TableColumn> tableColumns) throws Exception {
         StringBuilder sbf = new StringBuilder();
         sbf.append("CREATE TABLE");
         sbf.append(blank);
@@ -54,20 +51,43 @@ public class SQLiteUtils {
         }
         sbf.append(blank);
         sbf.append(")");
-        return execute(sbf.toString());
+        Statement statement = connection.createStatement();
+        statement.execute(sbf.toString());
+        statement.close();
     }
 
-    public boolean execute(String sql) throws Exception {
-        return statement.execute(sql);
+    private PreparedStatement executeHelp(String sql, Object... values) throws Exception {
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        if (values != null && values.length > 0) {
+            for (int i = 0; i < values.length; i++) {
+                preparedStatement.setObject(i + 1, values[i]);
+            }
+        }
+        return preparedStatement;
     }
 
-    public ResultSet executeQuery(String sql) throws Exception {
-        return statement.executeQuery(sql);
+    public ResultSet executeQuery(String sql, Object... values) throws Exception {
+        PreparedStatement preparedStatement = executeHelp(sql, values);
+        return preparedStatement.executeQuery();
     }
 
-    public List<Map<String, Object>> executeQueryList(String sql) throws Exception {
+    public int executeUpdate(String sql, Object... values) throws Exception {
+        PreparedStatement preparedStatement = executeHelp(sql, values);
+        int result = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return result;
+    }
+
+    public boolean execute(String sql, Object... values) throws Exception {
+        PreparedStatement preparedStatement = executeHelp(sql, values);
+        boolean result = preparedStatement.execute();
+        preparedStatement.close();
+        return result;
+    }
+
+    public List<Map<String, Object>> executeQueryList(String sql, Object... values) throws Exception {
         List<Map<String, Object>> list = new ArrayList<>();
-        ResultSet resultSet = executeQuery(sql);
+        ResultSet resultSet = executeQuery(sql, values);
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         while (resultSet.next()) {
             list.add(new HashMap<String, Object>() {
@@ -81,8 +101,8 @@ public class SQLiteUtils {
         return list;
     }
 
-    public Map<String, Object> executeQueryMap(String sql) throws Exception {
-        ResultSet resultSet = executeQuery(sql);
+    public Map<String, Object> executeQueryMap(String sql, Object... values) throws Exception {
+        ResultSet resultSet = executeQuery(sql, values);
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         if (resultSet.next())
             return new HashMap<String, Object>() {
@@ -95,22 +115,24 @@ public class SQLiteUtils {
         else return null;
     }
 
-    public int executeUpdate(String sql) throws Exception {
-        return statement.executeUpdate(sql);
-    }
-
     public void close() throws Exception {
-        statement.close();
         connection.close();
     }
 
     public static void main(String[] args) {
         try {
             SQLiteUtils sqLite = new SQLiteUtils(JettyStart.getStartPath() + JettyStart.separator + "test.db");
-            System.out.println(JSON.toJSONString(sqLite.execute("insert into test values(1, 'asd');")));
-            System.out.println(JSON.toJSONString(sqLite.executeQueryList("select * from test;")));
-            System.out.println(JSON.toJSONString(sqLite.executeUpdate("delete from test;")));
-            System.out.println(JSON.toJSONString(sqLite.executeQueryMap("select * from test;")));
+            sqLite.createTable("test", new ArrayList<TableColumn>() {
+                {
+                    add(new TableColumn("id"));
+                    add(new TableColumn("name"));
+                }
+            });
+            System.out.println(JSON.toJSONString(sqLite.execute("insert into test values(?, ?)", 1, "asdb")));
+            System.out.println(JSON.toJSONString(sqLite.execute("insert into test values(?, ?)", 2, "zxcb")));
+            System.out.println(JSON.toJSONString(sqLite.executeQueryList("select * from test ")));
+            System.out.println(JSON.toJSONString(sqLite.executeUpdate("delete from test where id = ?", 1)));
+            System.out.println(JSON.toJSONString(sqLite.executeQueryMap("select * from test where id = ? ", 2)));
         } catch (Exception e) {
             e.printStackTrace();
         }

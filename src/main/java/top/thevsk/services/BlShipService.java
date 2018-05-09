@@ -23,60 +23,6 @@ import java.util.Map;
 @BotService
 public class BlShipService {
 
-    private static final String wikiUrl = "http://wiki.joyme.com/blhx/";
-
-    private static final String dbUrl = JettyStart.getStartPath() + JettyStart.separator + "database" + JettyStart.separator + "blShip.db";
-
-    private static SQLiteUtils db = null;
-
-    private static boolean debugger = false;
-
-    private String read(String key) throws Exception {
-        if (StrKit.isBlank(key)) throw new Exception("key is null");
-        if (db == null) {
-            initDb();
-        }
-        Map map = db.executeQueryMap("select * from t_main where key = '" + key + "';");
-        if (map == null) return null;
-        Object value = map.get("value");
-        return value == null ? null : value.toString();
-    }
-
-    private String readEx(String key) throws Exception {
-        String value = read(key);
-        if (StrKit.isBlank(value)) throw new Exception("db key " + key + " is null");
-        return value;
-    }
-
-    private void update(String key, String value) throws Exception {
-        if (db == null) {
-            initDb();
-        }
-        if (read(key) == null) {
-            db.execute("insert into t_main (key, value) values ('" + key + "','" + value + "');");
-        } else {
-            db.executeUpdate("update t_main set value = '" + value + "' where key = '" + key + "';");
-        }
-    }
-
-    private void initDb() {
-        try {
-            db = new SQLiteUtils(dbUrl);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        try {
-            db.createTable("t_main", new ArrayList<SQLiteUtils.TableColumn>() {
-                {
-                    add(new SQLiteUtils.TableColumn("key"));
-                    add(new SQLiteUtils.TableColumn("value"));
-                }
-            });
-        } catch (Exception e) {
-            Constants.doNothing();
-        }
-    }
-
     @BotMessage(filter = "eq:!initDb")
     public void initDb(ApiRequest request, ApiResponse response) {
         try {
@@ -101,7 +47,7 @@ public class BlShipService {
         }
     }
 
-    @BotMessage(filter = "startWith:!editDb")
+    @BotMessage(filter = "startWith:!editDb|userId:2522534416")
     public void editDb(ApiRequest request, ApiResponse response) {
         try {
             Map<String, String> map = MessageUtils.parseMap(request.getMessage());
@@ -133,6 +79,60 @@ public class BlShipService {
             response.reply(search(request.getMessage().trim(), response));
         } catch (Exception e) {
             response.replyAt(e.getMessage());
+        }
+    }
+
+    private static final String wikiUrl = "http://wiki.joyme.com/blhx/";
+
+    private static final String dbUrl = JettyStart.getStartPath() + JettyStart.separator + "database" + JettyStart.separator + "blShip.db";
+
+    private static SQLiteUtils db = null;
+
+    private static boolean debugger = false;
+
+    private String read(String key) throws Exception {
+        if (StrKit.isBlank(key)) throw new Exception("key is null");
+        if (db == null) {
+            initDb();
+        }
+        Map map = db.executeQueryMap("select * from t_main where key = ?", key);
+        if (map == null) return null;
+        Object value = map.get("value");
+        return value == null ? null : value.toString();
+    }
+
+    private String readEx(String key) throws Exception {
+        String value = read(key);
+        if (StrKit.isBlank(value)) throw new Exception("db key " + key + " is null");
+        return value;
+    }
+
+    private void update(String key, String value) throws Exception {
+        if (db == null) {
+            initDb();
+        }
+        if (read(key) == null) {
+            db.execute("insert into t_main (key, value) values (?, ?)", key, value);
+        } else {
+            db.executeUpdate("update t_main set value = ? where key = ?", value, key);
+        }
+    }
+
+    private void initDb() {
+        try {
+            db = new SQLiteUtils(dbUrl);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        try {
+            db.createTable("t_main", new ArrayList<SQLiteUtils.TableColumn>() {
+                {
+                    add(new SQLiteUtils.TableColumn("key"));
+                    add(new SQLiteUtils.TableColumn("value"));
+                }
+            });
+        } catch (Exception e) {
+            Constants.doNothing();
         }
     }
 
