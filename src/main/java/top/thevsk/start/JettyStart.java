@@ -17,9 +17,13 @@ public class JettyStart {
 
     static Log log = Log.getLog(JettyStart.class);
 
+    public static boolean isJar() {
+        return JettyStart.class.getProtectionDomain().getCodeSource().getLocation().getFile().contains(".jar");
+    }
+
     public static String getStartPath() {
         String path = JettyStart.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        if (path.contains(".jar")) {
+        if (isJar()) {
             log.info("[读取目录] jar 环境");
             path = path.substring(0, path.lastIndexOf(separator));
         } else {
@@ -33,14 +37,16 @@ public class JettyStart {
     public static void main(String[] args) {
         String path = getStartPath();
         if (path == null) {
-            throw new RuntimeException("jar path can't find");
+            throw new RuntimeException("jar path no find");
         }
         path += separator + "config.properties";
         File file = new File(path);
         if (!file.exists()) {
-            throw new RuntimeException("properties not find");
+            if (isJar()) throw new RuntimeException("properties no find");
+            PropKit.use("config.properties");
+        } else {
+            PropKit.use(file);
         }
-        PropKit.use(file);
         EnumSet<DispatcherType> all = EnumSet.of(DispatcherType.ASYNC, DispatcherType.ERROR,
                 DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.REQUEST);
         int port = PropKit.getInt("server.port");

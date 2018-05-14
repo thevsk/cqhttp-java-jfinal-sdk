@@ -17,13 +17,18 @@ import java.util.Map;
 @BotService
 public class ManageService {
 
-    @BotMessage(messageType = MessageType.PRIVATE, filter = "eq:!groupList|userId:2522534416")
+    /**
+     * 展示群列表
+     *
+     * @param request
+     * @param response
+     */
+    @BotMessage(messageType = MessageType.PRIVATE, filter = "eq:!groupList")
     public void groupList(ApiRequest request, ApiResponse response) {
         try {
             ReturnJson returnJson = ApiGet.getGroupList();
             if (returnJson.getRetcode() == 0) {
-                StringBuffer sbf = new StringBuffer();
-                sbf.append("Num:" + returnJson.getDataList().size());
+                StringBuilder sbf = new StringBuilder("Num:" + returnJson.getDataList().size());
                 sbf.append("\n");
                 for (int i = 0; i < returnJson.getDataList().size(); i++) {
                     if (i != 0) {
@@ -39,16 +44,27 @@ public class ManageService {
         }
     }
 
-    @BotMessage(messageType = MessageType.PRIVATE, filter = "startWith:!clean|userId:2522534416")
+    /**
+     * 清除缓存
+     *
+     * @param request
+     * @param response
+     */
+    @BotMessage(messageType = MessageType.PRIVATE, filter = "eq:!clean")
     public void clean(ApiRequest request, ApiResponse response) {
-        if (request.getMessage().trim().equals("?")) {
-            response.reply("image record show bface");
-            return;
+        String[] cleans = {"image", "record", "show", "bface"};
+        for (String clean : cleans) {
+            response.reply(ApiSystem.cleanDataDir(clean).toString());
         }
-        response.reply(ApiSystem.cleanDataDir(request.getMessage().trim()).toString());
     }
 
-    @BotMessage(messageType = MessageType.PRIVATE, filter = "startWith:!noticeGroup|userId:2522534416")
+    /**
+     * 通知所有群
+     *
+     * @param request
+     * @param response
+     */
+    @BotMessage(messageType = MessageType.PRIVATE, filter = "startWith:!noticeGroup")
     public void noticeGroup(ApiRequest request, ApiResponse response) {
         ReturnJson returnJson = ApiGet.getGroupList();
         if (returnJson.getRetcode() == 0) {
@@ -59,12 +75,24 @@ public class ManageService {
             response.reply("retCode:" + returnJson.getRetcode());
     }
 
-    @BotMessage(messageType = MessageType.PRIVATE, filter = "startWith:!outGroup|userId:2522534416")
+    /**
+     * 退群
+     *
+     * @param request
+     * @param response
+     */
+    @BotMessage(messageType = MessageType.PRIVATE, filter = "startWith:!outGroup")
     public void outGroup(ApiRequest request, ApiResponse response) {
         response.reply(ApiSet.setGroupLeave(Long.valueOf(request.getMessage().trim()), false).toString());
     }
 
-    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!rename|userId:2522534416")
+    /**
+     * 更改群名片
+     *
+     * @param request
+     * @param response
+     */
+    @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!rename")
     public void reGroupName(ApiRequest request, ApiResponse response) {
         try {
             Long userId;
@@ -81,6 +109,12 @@ public class ManageService {
         }
     }
 
+    /**
+     * 踢出群成员
+     *
+     * @param request
+     * @param response
+     */
     @BotMessage(messageType = MessageType.GROUP, filter = "startWith:!kick|userId:2522534416")
     public void kick(ApiRequest request, ApiResponse response) {
         try {

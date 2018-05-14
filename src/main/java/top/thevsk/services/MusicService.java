@@ -57,7 +57,7 @@ public class MusicService {
     }
 
     /**
-     * qq点歌，可以正常使用
+     * qq点歌，可以正常使用 （已经停止使用，服务器被 TX 黑名单了）
      *
      * @param message
      * @return
