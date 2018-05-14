@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.thevsk</groupId>
-    <artifactId>HttpApiJava</artifactId>
+    <artifactId>cqhttp-java-jfinal-sdk</artifactId>
     <version>1.0.0</version>
-    <name>HttpApiJava</name>
+    <name>cqhttp-java-jfinal-sdk</name>
     <packaging>jar</packaging>
 
     <dependencies>
