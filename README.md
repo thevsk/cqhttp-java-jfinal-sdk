@@ -55,7 +55,7 @@ public class HelloWorldService {
 
 加了这个注解的方法会接受到 HTTP API 插件上报 post_type 为 message 的消息 (收到消息)
 
-#### 注解参数
+注解参数：
 
 1. MessageType 枚举 Enum 类型，默认值 DEFAULT(所有) ，再次细化接受的消息类型，可以使用的有 PRIVATE(私聊消息)、 GROUP(群消息)、 DISCUSS(讨论组消息)
 
@@ -67,7 +67,7 @@ public class HelloWorldService {
 
 加了这个注解的方法会接受到 HTTP API 插件上报 post_type 为 request 的消息 (加好友请求、加群请求/邀请)
 
-#### 注解参数
+注解参数：
 
 1. RequestType 枚举 Enum 类型，默认值 DEFAULT(所有) ，再次细化接受的请求类型，可以使用的有 FRIEND(好友通知)、 GROUP(群通知)
 
@@ -77,7 +77,7 @@ public class HelloWorldService {
 
 加了这个注解的方法会接受到 HTTP API 插件上报 post_type 为 event 的消息 (群、讨论组变动等非消息类事件)
 
-#### 注解参数
+注解参数：
 
 1. EventType 枚举 Enum 类型，默认值 DEFAULT(所有)，再次细化接受的通知类型，可以使用的有 GROUP_UPLOAD(群文件上传)、 GROUP_ADMIN(群管理员变动)、 GROUP_DECREASE(群成员减少)、 GROUP_INCREASE(群成员增加)、 FRIEND_ADD(好友添加)
 
