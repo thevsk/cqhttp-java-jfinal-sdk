@@ -81,3 +81,53 @@ public class HelloWorldService {
 
 1. EventType 枚举 Enum 类型，默认值 DEFAULT(所有)，再次细化接受的通知类型，可以使用的有 GROUP_UPLOAD(群文件上传)、 GROUP_ADMIN(群管理员变动)、 GROUP_DECREASE(群成员减少)、 GROUP_INCREASE(群成员增加)、 FRIEND_ADD(好友添加)
 
+## 调用 API 插件
+
+所有的方法都在包 `top.thevsk.api` 内，共有四个类，所有的方法皆为 `static`，ApiGet(获取个人资料，群等)、ApiSend(发送消息)、ApiSet(群禁言踢人，处理加群加好友请求等)、ApiSystem(获取插件或酷Q的信息及清理缓存)
+
+## utils
+
+1. `top.thevsk.utils.CQUtils` 提供了所有的CQ码和几个CQ码解析方法，解析CQ码方法：getUserIdInCqAtMessage(从CQAt中解析出userId)、 getUrlInCqImage(从CQImage解析出网络url)
+
+1. `top.thevsk.utils.SQLiteUtils` 自用的 SQLite 数据库，包含链接指定文件，增删改查，新建表等方法，若要使用 SQLite 数据库必须添加 `sqlite-jdbc` 在 pom.xml 文件中，使用方法在类的 main 方法中
+
+## config文件
+
+src/main/resources
+
+```
+#服务端口
+server.port=7500
+#Config路径
+config.class.path=top.thevsk.config.HttpConfig
+#扫描BotService包路径，用半角逗号分隔
+bot.service.packages=top.thevsk.services
+#CoolQ HTTP API配置
+http.api.secret=thevsk
+http.api.access_token=thevsk
+http.api.url=http://127.0.0.1:5700/
+```
+
+## 启动项目
+
+本项目用 Jetty 启动
+
+在 `top.thevsk.start.JettyStart` 内
+
+运行 main 方法
+
+## 打包发布
+
+使用 mvn package 命令打包项目
+
+在项目下 target 文件夹内，拷贝 cqhttp-java-jfinal-sdk-{version}.jar 文件，lib 文件夹，config.properties 文件到服务器
+
+在服务器用命令
+```
+java -jar cqhttp-java-jfinal-sdk-{version}.jar
+```
+
+或者后台执行
+```
+nohup java -jar cqhttp-java-jfinal-sdk-{version}.jar > server.log 2>&1 &
+```

@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
 public class CQUtils {
 
     private static String base(String function, String keys[], Object... values) {
-        if (keys.length != values.length) return null;
         String cq = "[CQ:" + function;
         if (NullUtils.isNull(keys, values)) return cq + "]";
-        StringBuffer sbf = new StringBuffer();
+        if (keys.length != values.length) return null;
+        StringBuilder sbf = new StringBuilder();
         for (int i = 0; i < keys.length; i++) {
             if (i != 0) {
                 sbf.append(",");
