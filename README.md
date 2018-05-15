@@ -127,12 +127,12 @@ http.api.url=http://127.0.0.1:5700/
 java -jar cqhttp-java-jfinal-sdk-{version}.jar
 ```
 
-或者后台执行
+或者后台执行(Linux)
 ```
 nohup java -jar cqhttp-java-jfinal-sdk-{version}.jar > server.log 2>&1 &
 ```
 
-服务器停止服务
+服务器停止服务(Linux)
 
 ```
 ps aux | grep cqhttp-java-jfinal-sdk
