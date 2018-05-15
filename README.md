@@ -145,3 +145,13 @@ ps aux | grep cqhttp-java-jfinal-sdk
 ```
 kill -9 {id}
 ```
+
+## BUG提交及联络方式
+
+若有BUG请加我QQ或者发邮件
+
+QQ：[2522534416](http://wpa.qq.com/msgrd?v=3&uin=2522534416&site=qq&menu=yes)
+
+QQ：[1916079648](http://wpa.qq.com/msgrd?v=3&uin=1916079648&site=qq&menu=yes)
+
+邮箱：zafkielcn@gmail.com
