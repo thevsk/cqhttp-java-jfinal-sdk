@@ -22,7 +22,7 @@ git clone https://github.com/thevsk/cqhttp-java-jfinal-sdk.git
 
 ```java
 @BotService
-public class TestService {
+public class HelloWorldService {
     
     @BotMessage(filter = "eq:helloWorld")
     public void share(ApiRequest request, ApiResponse response) {
