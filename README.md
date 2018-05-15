@@ -131,3 +131,12 @@ java -jar cqhttp-java-jfinal-sdk-{version}.jar
 ```
 nohup java -jar cqhttp-java-jfinal-sdk-{version}.jar > server.log 2>&1 &
 ```
+
+服务器停止服务
+
+```
+ps aux | grep cqhttp-java-jfinal-sdk
+```
+```
+kill -9 {id}
+```
