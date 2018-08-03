@@ -1,7 +1,7 @@
 package top.thevsk.plugins.loader;
 
 import com.jfinal.aop.Enhancer;
-import com.jfinal.log.Log;
+import com.jfinal.kit.LogKit;
 import top.thevsk.annotation.BotEvent;
 import top.thevsk.annotation.BotMessage;
 import top.thevsk.annotation.BotRequest;
@@ -18,8 +18,6 @@ import java.util.concurrent.ConcurrentMap;
 
 public class BotServiceLoader {
 
-    private final Log log = Log.getLog(BotServiceLoader.class);
-
     private String[] packages;
 
     public BotServiceLoader(String[] packages) {
@@ -31,7 +29,7 @@ public class BotServiceLoader {
         Set<Method> botMessageMethods = new HashSet<>();
         Set<Method> botRequestMethods = new HashSet<>();
         Set<Method> botEventMethods = new HashSet<>();
-        log.info("[预加载] botService");
+        LogKit.info("[预加载] botService");
         Set<Class<?>> classes = ClassSearcher.getClasses(this.packages, BotService.class);
         for (Class<?> clazz : classes) {
             BotService botService = clazz.getAnnotation(BotService.class);
@@ -40,10 +38,10 @@ public class BotServiceLoader {
                 MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
                 MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
                 MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
-                log.info("[预加载] " + clazz.getName());
+                LogKit.info("[预加载] " + clazz.getName());
             }
         }
-        BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods, iocBeanMap);
-        log.info("[预加载] botService 完成");
+        BotServiceKit.init(botMessageMethods, botRequestMethods, botEventMethods, iocBeanMap, classes);
+        LogKit.info("[预加载] botService 完成");
     }
 }

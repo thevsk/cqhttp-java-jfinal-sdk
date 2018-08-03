@@ -16,8 +16,8 @@ public class MessageFilterInterceptor {
     public boolean filter(String filter, ApiRequest request) {
         if (filter.contains("|")) {
             String[] filters = filter.split("\\|");
-            for (int i = 0; i < filters.length; i++) {
-                if (!filterInv(filters[i], request)) return false;
+            for (String _filter : filters) {
+                if (!filterInv(_filter, request)) return false;
             }
             return true;
         } else {
@@ -25,7 +25,7 @@ public class MessageFilterInterceptor {
         }
     }
 
-    public boolean filterInv(String filter, ApiRequest request) {
+    private boolean filterInv(String filter, ApiRequest request) {
         if (filter.startsWith("eq:")) {
             return eqs(filter.replace("eq:", ""), request.getMessage());
         }
@@ -46,18 +46,16 @@ public class MessageFilterInterceptor {
 
     private boolean eqs(String filter, String message) {
         String[] filters = filter.split(",");
-        for (int i = 0; i < filters.length; i++) {
-            if (filters[i].equals(message)) {
-                return true;
-            }
+        for (String _filter : filters) {
+            if (_filter.equals(message)) return true;
         }
         return false;
     }
 
     private boolean likes(String filter, String message) {
         String[] filters = filter.split(",");
-        for (int i = 0; i < filters.length; i++) {
-            if (message.contains(filters[i])) {
+        for (String _filter : filters) {
+            if (message.contains(_filter)) {
                 return true;
             }
         }
@@ -66,9 +64,9 @@ public class MessageFilterInterceptor {
 
     private boolean startWiths(String filter, ApiRequest apiRequest) {
         String[] filters = filter.split(",");
-        for (int i = 0; i < filters.length; i++) {
-            if (apiRequest.getMessage().startsWith(filters[i])) {
-                apiRequest.set("message", apiRequest.getMessage().substring(filters[i].length(), apiRequest.getMessage().length()));
+        for (String _filter : filters) {
+            if (apiRequest.getMessage().startsWith(_filter)) {
+                apiRequest.set("message", apiRequest.getMessage().substring(_filter.length(), apiRequest.getMessage().length()));
                 return true;
             }
         }
@@ -77,8 +75,8 @@ public class MessageFilterInterceptor {
 
     private boolean idEqs(String filter, Long id) {
         String[] filters = filter.split(",");
-        for (int i = 0; i < filters.length; i++) {
-            if (Long.valueOf(filters[i]).equals(id)) {
+        for (String _filter : filters) {
+            if (Long.valueOf(_filter).equals(id)) {
                 return true;
             }
         }
