@@ -1,5 +1,7 @@
 # cqhttp-java-jfinal-sdk 
 
+**这东西不能叫SDK，以前没写过SDK，这个只能是个框架，新的SDK是个JAR，还正在开发，预计会把现在的几个特点（主要是注解）加进去，这个项目可能不会在更新了，新的SDK写完后会发地址**
+
 > 感谢 [@richardchien](https://github.com/richardchien) 提供 [richardchien/coolq-http-api](https://github.com/richardchien/coolq-http-api)
 
 基于 [酷Q](https://cqp.cc/) 与 [richardchien/coolq-http-api](https://github.com/richardchien/coolq-http-api) 的 JAVA SDK， 框架使用 [jfinal/jfinal](https://github.com/jfinal/jfinal)， 依赖 maven
