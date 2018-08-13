@@ -1,12 +1,12 @@
 package top.thevsk.services;
 
-import top.thevsk.annotation.BotEvent;
+import top.thevsk.annotation.BotNotice;
 import top.thevsk.annotation.BotService;
 import top.thevsk.api.ApiGet;
 import top.thevsk.entity.ApiRequest;
 import top.thevsk.entity.ApiResponse;
 import top.thevsk.entity.ReturnJson;
-import top.thevsk.enums.EventType;
+import top.thevsk.enums.NoticeType;
 
 @BotService
 public class WelcomeService {
@@ -17,7 +17,7 @@ public class WelcomeService {
      * @param request
      * @param response
      */
-    @BotEvent(eventType = EventType.GROUP_INCREASE)
+    @BotNotice(noticeType = NoticeType.GROUP_INCREASE)
     public void welocome(ApiRequest request, ApiResponse response) {
         if (request.isSelf()) return;
         response.reply("欢迎 [CQ:at,qq=" + request.getUserId() + "] 加入本群！");
@@ -28,7 +28,7 @@ public class WelcomeService {
      * @param request
      * @param response
      */
-    @BotEvent(eventType = EventType.GROUP_DECREASE)
+    @BotNotice(noticeType = NoticeType.GROUP_DECREASE)
     public void leave(ApiRequest request, ApiResponse response) {
         if (request.isSelf()) return;
         ReturnJson returnJson = ApiGet.getStrangerInfo(request.getUserId(), false);

@@ -1,8 +1,8 @@
 package top.thevsk.start;
 
 import com.jfinal.core.JFinalFilter;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PropKit;
-import com.jfinal.log.Log;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -15,8 +15,6 @@ public class JettyStart {
 
     public static String separator = "/";
 
-    static Log log = Log.getLog(JettyStart.class);
-
     public static boolean isJar() {
         return JettyStart.class.getProtectionDomain().getCodeSource().getLocation().getFile().contains(".jar");
     }
@@ -24,10 +22,10 @@ public class JettyStart {
     public static String getStartPath() {
         String path = JettyStart.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         if (isJar()) {
-            log.info("[读取目录] jar 环境");
+            LogKit.info("[读取目录] jar 环境");
             path = path.substring(0, path.lastIndexOf(separator));
         } else {
-            log.info("[读取目录] 非 jar 环境");
+            LogKit.info("[读取目录] 非 jar 环境");
             path = path.substring(0, path.length() - 1);
             path = path.substring(0, path.lastIndexOf(separator));
         }
@@ -51,7 +49,7 @@ public class JettyStart {
                 DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.REQUEST);
         int port = PropKit.getInt("server.port");
         final Server server = new Server(port);
-        log.info("[服务] 端口 " + port);
+        LogKit.info("[服务] 端口 " + port);
         try {
             WebAppContext context = new WebAppContext("/", "/");
             FilterHolder filter = new FilterHolder(new JFinalFilter());

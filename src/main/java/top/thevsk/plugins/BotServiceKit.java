@@ -2,12 +2,12 @@ package top.thevsk.plugins;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.LogKit;
-import top.thevsk.annotation.BotEvent;
 import top.thevsk.annotation.BotMessage;
+import top.thevsk.annotation.BotNotice;
 import top.thevsk.annotation.BotRequest;
 import top.thevsk.annotation.BotServiceAop;
-import top.thevsk.enums.EventType;
 import top.thevsk.enums.MessageType;
+import top.thevsk.enums.NoticeType;
 import top.thevsk.enums.RequestType;
 import top.thevsk.interceptor.interfaces.BotServiceInterceptor;
 
@@ -100,19 +100,19 @@ public class BotServiceKit {
     }
 
     private static void eachBotEvent() {
-        for (EventType eventType : EventType.class.getEnumConstants()) {
-            if (EventType.DEFAULT.equals(eventType)) continue;
+        for (NoticeType eventType : NoticeType.class.getEnumConstants()) {
+            if (NoticeType.DEFAULT.equals(eventType)) continue;
             Set<Method> set = new HashSet<>();
             for (Method method : botEventMethods) {
-                BotEvent botEvent = method.getAnnotation(BotEvent.class);
-                if (eventType.equals(botEvent.eventType())) {
+                BotNotice botEvent = method.getAnnotation(BotNotice.class);
+                if (eventType.equals(botEvent.noticeType())) {
                     set.add(method);
                 }
-                if (EventType.DEFAULT.equals(botEvent.eventType())) {
+                if (NoticeType.DEFAULT.equals(botEvent.noticeType())) {
                     set.add(method);
                 }
             }
-            botEventMethodsMap.put("EventType:" + eventType.getCode(), set);
+            botEventMethodsMap.put("NoticeType:" + eventType.getCode(), set);
         }
     }
 
@@ -124,8 +124,8 @@ public class BotServiceKit {
         return botRequestMethodsMap.get("RequestType:" + requestType.getCode());
     }
 
-    public static Set<Method> getBotEventMethods(EventType eventType) {
-        return botEventMethodsMap.get("EventType:" + eventType.getCode());
+    public static Set<Method> getBotEventMethods(NoticeType eventType) {
+        return botEventMethodsMap.get("NoticeType:" + eventType.getCode());
     }
 
     public static Object getClassInstanceByMethod(Method method) {

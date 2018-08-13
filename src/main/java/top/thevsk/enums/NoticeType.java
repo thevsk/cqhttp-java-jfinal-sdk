@@ -1,6 +1,6 @@
 package top.thevsk.enums;
 
-public enum EventType {
+public enum NoticeType {
 
     DEFAULT(""),
     GROUP_UPLOAD("group_upload"),
@@ -15,7 +15,7 @@ public enum EventType {
         return code;
     }
 
-    EventType(String code) {
+    NoticeType(String code) {
         this.code = code;
     }
 }

@@ -2,8 +2,8 @@ package top.thevsk.plugins.loader;
 
 import com.jfinal.aop.Enhancer;
 import com.jfinal.kit.LogKit;
-import top.thevsk.annotation.BotEvent;
 import top.thevsk.annotation.BotMessage;
+import top.thevsk.annotation.BotNotice;
 import top.thevsk.annotation.BotRequest;
 import top.thevsk.annotation.BotService;
 import top.thevsk.plugins.BotServiceKit;
@@ -37,7 +37,7 @@ public class BotServiceLoader {
                 iocBeanMap.put(clazz.getName(), Enhancer.enhance(clazz));
                 MethodSearcher.addMethod(clazz, BotMessage.class, botMessageMethods);
                 MethodSearcher.addMethod(clazz, BotRequest.class, botRequestMethods);
-                MethodSearcher.addMethod(clazz, BotEvent.class, botEventMethods);
+                MethodSearcher.addMethod(clazz, BotNotice.class, botEventMethods);
                 LogKit.info("[预加载] " + clazz.getName());
             }
         }

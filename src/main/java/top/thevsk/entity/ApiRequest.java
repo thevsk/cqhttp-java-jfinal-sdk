@@ -1,7 +1,7 @@
 package top.thevsk.entity;
 
-import top.thevsk.enums.EventType;
 import top.thevsk.enums.MessageType;
+import top.thevsk.enums.NoticeType;
 import top.thevsk.enums.RequestType;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class ApiRequest {
         if (map.get(key) != null) {
             return map.get(key).toString();
         }
-        return null;
+        throw new RuntimeException("解析上报信息出错 key [" + key + "] value is null ");
     }
 
     private Long getLong(String key) {
@@ -147,9 +147,9 @@ public class ApiRequest {
      *
      * @return
      */
-    public EventType getEvent() {
-        if (getStr("event") == null) return null;
-        return EventType.valueOf(getStr("event").toUpperCase());
+    public NoticeType getNoticeType() {
+        if (getStr("notice_type") == null) return null;
+        return NoticeType.valueOf(getStr("notice_type").toUpperCase());
     }
 
     /**

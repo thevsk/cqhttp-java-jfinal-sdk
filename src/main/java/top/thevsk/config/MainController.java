@@ -40,8 +40,8 @@ public class MainController extends Controller {
                 case Constants.POST_TYPE_MESSAGE:
                     methods = BotServiceKit.getBotMessageMethods(apiRequest.getMessageType());
                     break;
-                case Constants.POST_TYPE_EVENT:
-                    methods = BotServiceKit.getBotEventMethods(apiRequest.getEvent());
+                case Constants.POST_TYPE_NOTICE:
+                    methods = BotServiceKit.getBotEventMethods(apiRequest.getNoticeType());
                     break;
                 case Constants.POST_TYPE_REQUEST:
                     methods = BotServiceKit.getBotRequestMethods(apiRequest.getRequestType());
