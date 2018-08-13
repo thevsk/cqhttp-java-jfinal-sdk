@@ -23,7 +23,7 @@ public class ApiRequest {
         if (map.get(key) != null) {
             return map.get(key).toString();
         }
-        throw new RuntimeException("解析上报信息出错 key [" + key + "] value is null ");
+        return null;
     }
 
     private Long getLong(String key) {
@@ -84,8 +84,31 @@ public class ApiRequest {
      * @return
      */
     public MessageType getMessageType() {
-        if (getStr("message_type") == null) return null;
-        return MessageType.valueOf(getStr("message_type").toUpperCase());
+        String messageType = getStr("message_type");
+        if (messageType == null) return null;
+        return MessageType.valueOf(messageType.toUpperCase());
+    }
+
+    /**
+     * 获取事件类型
+     *
+     * @return
+     */
+    public NoticeType getNoticeType() {
+        String noticeType = getStr("notice_type");
+        if (noticeType == null) return null;
+        return NoticeType.valueOf(noticeType.toUpperCase());
+    }
+
+    /**
+     * 请求类型
+     *
+     * @return
+     */
+    public RequestType getRequestType() {
+        String requestType = getStr("request_type");
+        if (requestType == null) return null;
+        return RequestType.valueOf(requestType.toUpperCase());
     }
 
     /**
@@ -143,32 +166,12 @@ public class ApiRequest {
     }
 
     /**
-     * 获取事件类型
-     *
-     * @return
-     */
-    public NoticeType getNoticeType() {
-        if (getStr("notice_type") == null) return null;
-        return NoticeType.valueOf(getStr("notice_type").toUpperCase());
-    }
-
-    /**
      * 获取操作者 QQ 号
      *
      * @return
      */
     public Long getOperatorId() {
         return getLong("operator_id");
-    }
-
-    /**
-     * 请求类型
-     *
-     * @return
-     */
-    public RequestType getRequestType() {
-        if (getStr("request_type") == null) return null;
-        return RequestType.valueOf(getStr("request_type").toUpperCase());
     }
 
     /**
