@@ -26,10 +26,10 @@ public class HttpConfig extends JFinalConfig {
     }
 
     public void configInterceptor(Interceptors interceptors) {
-        if (PropKit.get("http.api.secret") != null) {
+//        if (PropKit.get("http.api.secret") != null) {
             interceptors.add(new SecretInterceptor());
             LogKit.info("[拦截器] Secret 加载成功");
-        }
+//        }
     }
 
     public void configHandler(Handlers handlers) {
