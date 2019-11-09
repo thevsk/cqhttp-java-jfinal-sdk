@@ -14,22 +14,22 @@ public class SecretInterceptor implements Interceptor {
     @Override
     public void intercept(Invocation invocation) {
         try {
-            String secret = PropKit.get("http.api.secret");
-            String sha1 = invocation.getController().getHeader("X-Signature");
-            if (StrKit.isBlank(sha1)) {
-                onError(invocation);
-                return;
-            }
+//            String secret = PropKit.get("http.api.secret");
+//            String sha1 = invocation.getController().getHeader("X-Signature");
+//            if (StrKit.isBlank(sha1)) {
+//                onError(invocation);
+//                return;
+//            }
             String body = HttpKit.readData(invocation.getController().getRequest());
-            String hmacSha1 = HmacSHA1Utils.hmacSha1(body.getBytes(), secret.getBytes());
-            if (hmacSha1 == null) {
-                onError(invocation);
-                return;
-            }
-            if (!sha1.contains(hmacSha1.toLowerCase())) {
-                onError(invocation);
-                return;
-            }
+//            String hmacSha1 = HmacSHA1Utils.hmacSha1(body.getBytes(), secret.getBytes());
+//            if (hmacSha1 == null) {
+//                onError(invocation);
+//                return;
+//            }
+//            if (!sha1.contains(hmacSha1.toLowerCase())) {
+//                onError(invocation);
+//                return;
+//            }
             MainController mainController = invocation.getTarget();
             mainController.body = body;
             invocation.invoke();
