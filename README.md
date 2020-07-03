@@ -1,3 +1,5 @@
+# 项目已经停止更新，如有需要请选择其他cqhttp java框架
+
 # cqhttp-java-jfinal-sdk 
 
 > 感谢 [@richardchien](https://github.com/richardchien) 提供 [richardchien/coolq-http-api](https://github.com/richardchien/coolq-http-api)
